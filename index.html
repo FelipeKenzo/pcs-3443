@@ -3,7 +3,12 @@
 <html>
     <style>
         .title{
-
+          position:relative;
+          margin-left:40%;
+        }
+        #forms{
+          position:relative;
+          margin-left:40%;
         }
     </style>
   <head>
@@ -18,15 +23,17 @@
   <body>
     <div id="root">
     </div>
-    <div style="position:absolute;left=40%">
-        <form action="/action_page.php">
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome"><br>
-        <label for="peso">Peso:</label><br>
-        <input type="text" id="peso" name="peso" ><br>
-        <label for="altura">Altura:</label><br>
-        <input type="text" id="altura" name="altura"><br>
-        <input type="submit" value="Submit">
+    <!---->
+    <div id="forms">
+        <form action="/form" method="POST">
+          <label for="nome">Nome:</label><br>
+          <input type="text" id="nome" name="nome"><br>
+          <label for="peso">Peso:</label><br>
+          <input type="text" id="peso" name="peso" ><br>
+          <label for="altura">Altura:</label><br>
+          <input type="text" id="altura" name="altura"><br><br>
+          <input type="submit" value="Submit"><br>
+        </form>
     </div>
     <script type="text/babel">
 
@@ -34,6 +41,7 @@
         <h1 class="title">Cálculo IMC</h1>,
         document.getElementById('root')
       );
+      
 
     </script>
     <!--
