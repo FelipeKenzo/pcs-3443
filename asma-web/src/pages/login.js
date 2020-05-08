@@ -45,125 +45,127 @@ const styles = (theme) => ({
 });
 
 class login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            errors: [],
-            loading: false
-        };
-    }
+	constructor(props) {
+		super(props);
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.UI.errors) {
-            this.setState({
-                errors: nextProps.UI.errors
-            });
-        }
-    }
+		this.state = {
+			email: '',
+			password: '',
+			errors: [],
+			loading: false
+		};
+	}
 
-    handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.UI.errors) {
+			this.setState({
+				errors: nextProps.UI.errors
+			});
+		}
+	}
 
-    handleSubmit = (event) => {
-        event.preventDefaul();
-        this.setState({loading: true});
-        const userData = {
-            email: this.state.email,
-            password: this.state.password
-        };
-        axios
-            .post('/login', userData)
-            .then((response) => {
-                localStorage.setItem('AuthToken', 'Bearer ${response.data.token}');
-                this.setState({
-                    loading: false,
-                });
-                this.props.history.push('/');
-            })
-            .catch((error) => {
-                this.setState({
-                    errors: error.response.data,
-                    loading: false
-                });
-            });
-    };
+	handleChange = (event) => {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+	};
 
-    render() {
-        const { classes } = this.props;
-        const { errors, loading} = this.state;
-        return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />  
-                <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Login
-                    </Typography>
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            helperText={errors.email}
-                            error={errors.email ? true : false}
-                            onChange={this.handleChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Senha"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            helperText={errors.password}
-                            error={errors.password ? true : false}
-                            onChange={this.handleChange}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            onClick={this.handleSubmit}
-                            disabled={loading || !this.state.email || !this.state.password}    
-                        >
-                            Entrar
-                            {loading && <CircularProgress size={30} className={classes.progress} />}
-                        </Button>
-                        <Grid containter>
-                            <Grid item>
-                                <Link href="signup" variant="body2">
-                                    {"Cadastrar-se"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                        {errors.general && (
-                            <Typography variant="body2" className={classes.customError}>
-                                {errors.general}
-                            </Typography>
-                        )}
-                    </form>
-                </div>
-            </Container>
-        )
-    }
-};
+	handleSubmit = (event) => {
+		event.preventDefault();
+		this.setState({ loading: true });
+		const userData = {
+			email: this.state.email,
+			password: this.state.password
+		};
+		axios
+			.post('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/login', userData)
+			.then((response) => {
+                console.log(response);
+				localStorage.setItem('AuthToken', `Bearer ${response.data.token}`);
+				this.setState({ 
+					loading: false,
+				});		
+				this.props.history.push('/');
+			})
+			.catch((error) => {				
+				this.setState({
+					errors: error.response.data,
+					loading: false
+				});
+			});
+	};
+
+	render() {
+		const { classes } = this.props;
+		const { errors, loading } = this.state;
+		return (
+			<Container component="main" maxWidth="xs">
+				<CssBaseline />
+				<div className={classes.paper}>
+					<Avatar className={classes.avatar}>
+						<LockOutlinedIcon />
+					</Avatar>
+					<Typography component="h1" variant="h5">
+						Login
+					</Typography>
+					<form className={classes.form} noValidate>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							id="email"
+							label="Email"
+							name="email"
+							autoComplete="email"
+							autoFocus
+							helperText={errors.email}
+							error={errors.email ? true : false}
+							onChange={this.handleChange}
+						/>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							name="password"
+							label="senha"
+							type="password"
+							id="password"
+							autoComplete="current-password"
+							helperText={errors.password}
+							error={errors.password ? true : false}
+							onChange={this.handleChange}
+						/>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+							onClick={this.handleSubmit}
+							disabled={loading || !this.state.email || !this.state.password}
+						>
+							Sign In
+							{loading && <CircularProgress size={30} className={classes.progess} />}
+						</Button>
+						<Grid container>
+							<Grid item>
+								<Link href="signup" variant="body2">
+									{"Don't have an account? Sign Up"}
+								</Link>
+							</Grid>
+						</Grid>
+						{errors.general && (
+							<Typography variant="body2" className={classes.customError}>
+								{errors.general}
+							</Typography>
+						)}
+					</form>
+				</div>
+			</Container>
+		);
+	}
+}
 
 export default withStyles(styles)(login);
