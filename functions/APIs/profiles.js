@@ -35,14 +35,20 @@ exports.get_profile = (request, response) => {
 
 exports.get_all_profiles = (request, response) => {
     database.collection("Paciente")
-    .where('doctorId', '==', request.params.doctorId)
+    // .where('id', '==', request.user.id)
+    .where('nome', '==', 'teste')
     .get()
-    .then((doc) => {
-        let name;
-        let steps;
-        name = doc.data().nome;
-        steps = doc.data().num_passos;
-        return response.json({name: name, steps: steps });
+    .then((data) => {
+        let name = [];
+        data.forEach((doc) => {
+            name.push({
+                nome: doc.data().nome,
+            });
+        });
+        // let steps;
+        // name = doc.data();
+        // steps = doc.data().num_passos;
+        return response.json(name);
     })
     .catch((error) => {
        return response.status(500).json({ error: error.code });
@@ -58,7 +64,7 @@ exports.delete_profile = (request, response) => {
         return document.delete();
     })
     .then(() => {
-        response.json({ message: 'Removido com sucesso' });
+        return response.json({ message: 'Removido com sucesso' });
     })
     .catch((error) => {
         return response.status(500).json({ error: error.code });
@@ -69,7 +75,7 @@ exports.update_profile = (request, response) => {
     let document = database.collection("Paciente").doc(request.params.PatientId);
     document.update(request.body)
     .then(() => {
-        response.json({ message: 'Atualizado com sucesso'});
+        return response.json({ message: 'Atualizado com sucesso'});
     })
     .catch((error) => {
         return response.status(500).json({ error: error.code });

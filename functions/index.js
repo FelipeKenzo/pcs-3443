@@ -19,20 +19,22 @@ const {
     delete_profile
 } = require('./APIs/profiles');
 
-// const {
-//     loginUser,
-//     signupUser
-// } = require('./APIs/users');
+const {
+    loginUser,
+    signUpProfessional,
+    signUpPatient
+} = require('./APIs/users');
 
-// const auth = require('./util/auth');
+const auth = require('./util/auth');
 
 app.post('/profiles/', add_profile);
-app.get('/profiles/', get_profile);
-app.get('/profiles/', get_all_profiles);
+app.get('/profile/', get_profile);
+app.get('/profiles/', auth, get_all_profiles);
 app.delete('/profiles/:PatientId', delete_profile);
 app.put('/profiles/:PatientId', update_profile);
 
-// app.post('/login', loginUser);
-// app.post('/signup', signupUser);
+app.post('/login', loginUser);
+app.post('/signup/professional', signUpProfessional);
+app.post('/signup/patient', signUpPatient);
 
 exports.api = functions.https.onRequest(app);
