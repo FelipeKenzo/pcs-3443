@@ -44,6 +44,7 @@ const styles = (theme) => ({
 	}
 });
 
+const logo = require("../images/logo.png")
 class login extends Component {
 	constructor(props) {
 		super(props);
@@ -102,9 +103,10 @@ class login extends Component {
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
-					<Avatar className={classes.avatar}>
+					{/*<Avatar className={classes.avatar}>
 						<LockOutlinedIcon />
-					</Avatar>
+					</Avatar>*/}
+					<img src={logo} width="450px" height="285px"/>
 					<Typography component="h1" variant="h5">
 						Login
 					</Typography>
