@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-function patientlist (props) {
+function PatientList (props) {
 
     return (
         <Grid container spacing={2}>
@@ -55,4 +55,4 @@ function patientlist (props) {
     );
 }
 
-export default patientlist;
+export default PatientList;

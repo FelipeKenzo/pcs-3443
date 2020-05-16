@@ -17,7 +17,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import axios from 'axios';
-import { authMiddleWare } from './util/auth'
+
+import { authMiddleWare } from './util/auth';
+import PatientList from './components/patientlist';
+import RegisterPatient from './components/registerpatient';
 
 
 const drawerWidth = 240;
@@ -89,7 +92,8 @@ export default function Home(props) {
 	
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-	const [loggedIn, setLoggedIn] = React.useState(false)/*props.isLoggedIn*/;
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [toRender, setRender] =  React.useState(0);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -102,6 +106,18 @@ export default function Home(props) {
   const logOutHandler = () => {
     localStorage.removeItem('AuthToken');
     props.history.push('/login');
+  }
+
+  const renderAcomp = () => {
+    setRender(0);
+  }
+
+  const renderEstat = () => {
+    setRender(1);
+  }
+
+  const renderReg = () => {
+    setRender(2);
   }
 
   authMiddleWare(props.history);
@@ -119,6 +135,19 @@ export default function Home(props) {
       }
       console.log(error);
     });
+
+    let render;
+    switch(toRender) {
+      case 0:
+        render = <PatientList />;
+        break;
+      case 1:
+        render = <h1>Stats</h1>;
+        break;
+      case 2:
+        render = <RegisterPatient />;
+        break;
+    }
 
 
   return (
@@ -174,17 +203,18 @@ export default function Home(props) {
           </IconButton>
         </div>
         <List>
-          <ListItem divider button component={Link} to="/acompanhamento" key="acomp">
+          <ListItem divider button key="acomp" onClick={renderAcomp}>
             <ListItemText primary="Acompanhamento" />
           </ListItem>
-          <ListItem divider button component={Link} to="/estat" key="estat">
+          <ListItem divider button key="estat" onClick={renderEstat}>
             <ListItemText primary="Estatísticas" />
           </ListItem>
-          <ListItem divider button component={Link} to="/register-patient" key="regist">
+          <ListItem divider button key="regist" onClick={renderReg}>
             <ListItemText primary="Registrar Paciente" />
           </ListItem>
         </List>
       </Drawer>
+      <div>{render}</div>
     </div>
   );
 }

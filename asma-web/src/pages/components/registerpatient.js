@@ -36,7 +36,7 @@ const styles = (theme) => ({
 	}
 });
 
-class registerPatient extends Component {
+class RegisterPatient extends Component {
 	constructor(props) {
 		super(props);
 
@@ -267,4 +267,4 @@ class registerPatient extends Component {
 	}
 }
 
-export default withStyles(styles)(registerPatient);
+export default withStyles(styles)(RegisterPatient);
