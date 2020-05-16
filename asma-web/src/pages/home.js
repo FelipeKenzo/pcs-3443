@@ -16,6 +16,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import axios from 'axios';
+import { authMiddleWare } from './util/auth'
 
 
 const drawerWidth = 240;
@@ -83,11 +85,11 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export default function Dashboard(props) {
+export default function Home(props) {
 	
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-	const loggedIn = true/*props.isLoggedIn*/;
+	const [loggedIn, setLoggedIn] = React.useState(false)/*props.isLoggedIn*/;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -96,6 +98,28 @@ export default function Dashboard(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const logOutHandler = () => {
+    localStorage.removeItem('AuthToken');
+    props.history.push('/login');
+  }
+
+  authMiddleWare(props.history);
+  const authToken = localStorage.getItem('AuthToken');
+  axios.defaults.headers.common = { Authorization: `${authToken}` };
+  axios
+    .get('/user')
+    .then((response) => {
+      console.log(response.data);
+      setLoggedIn(true);
+    })
+    .catch((error) => {
+      if(error.response.status === 403) {
+        props.history.push('/login')
+      }
+      console.log(error);
+    });
+
 
   return (
     <div className={classes.root}>
@@ -130,8 +154,7 @@ export default function Dashboard(props) {
 					<Button 
 						variant="contained" 
 						color="secondary"
-						href={loggedIn ? "/" : "/login"}
-					>
+						onClick={logOutHandler}>
 						{loggedIn ? "Logout" : "Login"}
 					</Button>
         </Toolbar>
@@ -151,13 +174,13 @@ export default function Dashboard(props) {
           </IconButton>
         </div>
         <List>
-          <ListItem divider button component={Link} to="/dash/acompanhamento" key="acomp">
+          <ListItem divider button component={Link} to="/acompanhamento" key="acomp">
             <ListItemText primary="Acompanhamento" />
           </ListItem>
-          <ListItem divider button component={Link} to="/dash/estat" key="estat">
+          <ListItem divider button component={Link} to="/estat" key="estat">
             <ListItemText primary="Estatísticas" />
           </ListItem>
-          <ListItem divider button component={Link} to="/dash/register-patient" key="regist">
+          <ListItem divider button component={Link} to="/register-patient" key="regist">
             <ListItemText primary="Registrar Paciente" />
           </ListItem>
         </List>
