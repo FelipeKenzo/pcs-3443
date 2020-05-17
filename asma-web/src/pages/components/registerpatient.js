@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -15,7 +13,7 @@ import axios from 'axios';
 
 const styles = (theme) => ({
 	paper: {
-		marginTop: theme.spacing(8),
+		marginTop: theme.spacing(1),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center'
@@ -37,6 +35,7 @@ const styles = (theme) => ({
 });
 
 class RegisterPatient extends Component {
+
 	constructor(props) {
 		super(props);
 
@@ -52,14 +51,6 @@ class RegisterPatient extends Component {
 			errors: [],
 			loading: false
 		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.UI.errors) {
-			this.setState({
-				errors: nextProps.UI.errors
-			});
-		}
 	}
 
 	handleChange = (event) => {
@@ -79,16 +70,15 @@ class RegisterPatient extends Component {
             height: this.state.height,
             weight: this.state.weight,
             password: this.state.password,
-            confirmPassword: this.state.confirmPassword
+			confirmPassword: this.state.confirmPassword,
+			proid: localStorage.getItem('proId')
 		};
 		axios
-			.post('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/signup', newPatientData)
+			.post('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/signup/patient', newPatientData)
 			.then((response) => {
-				localStorage.setItem('AuthToken', `${response.data.token}`);
 				this.setState({ 
 					loading: false,
 				});	
-				this.props.history.push('/login');
 			})
 			.catch((error) => {
                 console.log(error);
@@ -103,15 +93,11 @@ class RegisterPatient extends Component {
 		const { classes } = this.props;
 		const { errors, loading } = this.state;
 		return (
-			<Container component="main" maxWidth="xs">
-				<CssBaseline />
+			<div>
+				<Typography component="h1" variant="h5">
+					Registrar Novo Paciente
+				</Typography>
 				<div className={classes.paper}>
-					<Avatar className={classes.avatar}>
-						<LockOutlinedIcon />
-					</Avatar>
-					<Typography component="h1" variant="h5">
-						Registrar paciente
-					</Typography>
 					<form className={classes.form} noValidate>
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>
@@ -143,14 +129,14 @@ class RegisterPatient extends Component {
 								/>
 							</Grid>
 
-                            <Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={6}>
 								<TextField
 									variant="outlined"
 									required
 									fullWidth
 									id="height"
-                                    label="Altura"
-                                    type="number"
+									label="Altura"
+									type="number"
 									name="height"
 									autoComplete="altura"
 									helperText={errors.height}
@@ -164,8 +150,8 @@ class RegisterPatient extends Component {
 									required
 									fullWidth
 									id="weight"
-                                    label="Peso"
-                                    type="number"
+									label="Peso"
+									type="number"
 									name="weight"
 									autoComplete="peso"
 									helperText={errors.weight}
@@ -180,7 +166,7 @@ class RegisterPatient extends Component {
 									required
 									fullWidth
 									id="email"
-                                    label="Email Address"
+									label="Email"
 									name="email"
 									autoComplete="email"
 									helperText={errors.email}
@@ -189,18 +175,18 @@ class RegisterPatient extends Component {
 								/>
 							</Grid>
 
-                            <Grid item xs={12}>
+							<Grid item xs={12}>
 								<TextField
 									variant="outlined"
 									required
 									fullWidth
-                                    id="phoneNumber"
-                                    type="tel"
-                                    label="Telefone"
+									id="phoneNumber"
+									type="tel"
+									label="Telefone"
 									name="phoneNumber"
 									autoComplete="phoneNumber"
-									helperText={errors.email}
-									error={errors.email ? true : false}
+									helperText={errors.telephone}
+									error={errors.telephone ? true : false}
 									onChange={this.handleChange}
 								/>
 							</Grid>
@@ -239,30 +225,29 @@ class RegisterPatient extends Component {
 							fullWidth
 							variant="contained"
 							color="primary"
+							label="Registrar"
 							className={classes.submit}
 							onClick={this.handleSubmit}
-                            disabled={loading || 
-                                !this.state.firstname ||
-                                !this.state.lastname ||
-                                !this.state.height ||
-                                !this.state.weight ||
-                                !this.state.email || 
-                                !this.state.password ||
-                                !this.state.confirmPassword}
+							disabled={loading || 
+								!this.state.firstname ||
+								!this.state.lastname ||
+								!this.state.height ||
+								!this.state.weight ||
+								!this.state.email || 
+								!this.state.password ||
+								!this.state.confirmPassword}
 						>
-							Sign Up
+							Cadastrar
 							{loading && <CircularProgress size={30} className={classes.progess} />}
 						</Button>
-						<Grid container justify="flex-end">
-							<Grid item>
-								<Link href="login" variant="body2">
-									Already have an account? Sign in
-								</Link>
-							</Grid>
-						</Grid>
+						{errors.general && (
+							<Typography variant="body2" className={classes.customError}>
+								{errors.general}
+							</Typography>
+						)}
 					</form>
 				</div>
-			</Container>
+			</div>
 		);
 	}
 }

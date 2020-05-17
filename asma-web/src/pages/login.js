@@ -8,7 +8,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Container from '@material-ui/core/Container';
@@ -83,12 +82,14 @@ class login extends Component {
 			.then((response) => {
                 console.log(response);
 				localStorage.setItem('AuthToken', `Bearer ${response.data.token}`);
+				localStorage.setItem('proId', `${this.state.email}`);
 				this.setState({ 
 					loading: false,
 				});		
 				this.props.history.push('/');
 			})
-			.catch((error) => {				
+			.catch((error) => {	
+				console.log(error);			
 				this.setState({
 					errors: error.response.data,
 					loading: false
@@ -103,9 +104,6 @@ class login extends Component {
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
-					{/*<Avatar className={classes.avatar}>
-						<LockOutlinedIcon />
-					</Avatar>*/}
 					<img src={logo} width="450px" height="285px"/>
 					<Typography component="h1" variant="h5">
 						Login
@@ -131,7 +129,7 @@ class login extends Component {
 							required
 							fullWidth
 							name="password"
-							label="senha"
+							label="Senha"
 							type="password"
 							id="password"
 							autoComplete="current-password"
@@ -151,13 +149,6 @@ class login extends Component {
 							Sign In
 							{loading && <CircularProgress size={30} className={classes.progess} />}
 						</Button>
-						<Grid container>
-							<Grid item>
-								<Link href="signup" variant="body2">
-									{"Don't have an account? Sign Up"}
-								</Link>
-							</Grid>
-						</Grid>
 						{errors.general && (
 							<Typography variant="body2" className={classes.customError}>
 								{errors.general}

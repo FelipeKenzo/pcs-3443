@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -12,15 +13,20 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
+import CreateIcon from '@material-ui/icons/Create';
+
 import axios from 'axios';
 
 import { authMiddleWare } from './util/auth';
 import PatientList from './components/patientlist';
 import RegisterPatient from './components/registerpatient';
+import PatientDetails from './components/patientdetails'
 
 
 const drawerWidth = 240;
@@ -30,21 +36,22 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: 36,
   },
   hide: {
     display: 'none',
@@ -52,48 +59,50 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    whiteSpace: 'nowrap',
   },
-  drawerPaper: {
+  drawerOpen: {
     width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
-  drawerHeader: {
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9) + 1,
+    },
+  },
+  toolbar: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
   },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-	},
-	typographyFlex: {
-		flex: 1,
-	},
-	gearButton: {
-		marginRight: theme.spacing(2),
-	}
+  typographyFlex: {
+    flex: 1,
+  },
 }));
 
 export default function Home(props) {
-	
   const classes = useStyles();
+  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [toRender, setRender] =  React.useState(0);
+  const [renderDetails, setRenderDetails] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -120,6 +129,14 @@ export default function Home(props) {
     setRender(2);
   }
 
+  const handleSelectPatient = () =>   {
+    setRenderDetails(true);
+  }
+
+  const handleBackToList = () => {
+    setRenderDetails(false);
+  }
+
   authMiddleWare(props.history);
   const authToken = localStorage.getItem('AuthToken');
   axios.defaults.headers.common = { Authorization: `${authToken}` };
@@ -139,7 +156,12 @@ export default function Home(props) {
     let render;
     switch(toRender) {
       case 0:
-        render = <PatientList />;
+        if (renderDetails) {
+          render = <PatientDetails handleBackToList={handleBackToList}/>;
+        }
+        else {
+          render = <PatientList handleSelectPatient={handleSelectPatient}/>;
+        }
         break;
       case 1:
         render = <h1>Stats</h1>;
@@ -148,7 +170,6 @@ export default function Home(props) {
         render = <RegisterPatient />;
         break;
     }
-
 
   return (
     <div className={classes.root}>
@@ -174,6 +195,9 @@ export default function Home(props) {
           <Typography variant="h6" noWrap className={classes.typographyFlex}>
             {loggedIn ? "Olá!" : "Login necessário."}
           </Typography>
+          <Typography variant="h6" noWrap className={classes.typographyFlex}>
+            RespireHC
+          </Typography>
 					<IconButton
 							color="inherit"
 							className={clsx(classes.gearButton, loggedIn === false && classes.hide)}
@@ -189,32 +213,42 @@ export default function Home(props) {
         </Toolbar>
       </AppBar>
       <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
         classes={{
-          paper: classes.drawerPaper,
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
         }}
       >
-        <div className={classes.drawerHeader}>
+        <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
         <List>
           <ListItem divider button key="acomp" onClick={renderAcomp}>
+            <ListItemIcon><RecentActorsIcon /></ListItemIcon>
             <ListItemText primary="Acompanhamento" />
           </ListItem>
           <ListItem divider button key="estat" onClick={renderEstat}>
+          <ListItemIcon><TimelineIcon /></ListItemIcon>
             <ListItemText primary="Estatísticas" />
           </ListItem>
           <ListItem divider button key="regist" onClick={renderReg}>
+            <ListItemIcon><CreateIcon /></ListItemIcon>
             <ListItemText primary="Registrar Paciente" />
           </ListItem>
         </List>
       </Drawer>
-      <div>{render}</div>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <div>{render}</div>
+      </main>
     </div>
   );
 }
