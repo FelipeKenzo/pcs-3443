@@ -7,7 +7,6 @@ firebase.initializeApp(config);
 
 const { validateLoginData, validateProfessionalSignUpData, validatePatientSignUpData } = require('../util/validators');
 
-// Login
 exports.loginUser = (request, response) => {
     const user = {
         email: request.body.email,
@@ -50,7 +49,7 @@ exports.signUpProfessional = (request, response) => {
     .get()
     .then((doc) => {
         if (doc.exists) {
-            return response.status(400).json({ email: 'this username is already taken' });
+            return response.status(400).json({ email: 'Email already in use' });
         } else {
             return firebase
                    .auth()
@@ -95,6 +94,7 @@ exports.signUpPatient = (request, response) => {
         firstname: request.body.firstname,
         lastname: request.body.lastname,
         email: request.body.email,
+        proid: request.body.proid,
         phoneNumber: request.body.phoneNumber,
         height: request.body.height,
         weight: request.body.weight,
@@ -111,7 +111,7 @@ exports.signUpPatient = (request, response) => {
     .get()
     .then((doc) => {
         if (doc.exists) {
-            return response.status(400).json({ email: 'this username is already taken' });
+            return response.status(400).json({ email: 'Email already in use' });
         } else {
             return firebase
                    .auth()
@@ -130,6 +130,7 @@ exports.signUpPatient = (request, response) => {
         const userCredentials = {
             firstname: newUser.firstname,
             lastname: newUser.lastname,
+            proid: request.body.proid,
             email: newUser.email,
             phoneNumber: newUser.phoneNumber,
             height: newUser.height,

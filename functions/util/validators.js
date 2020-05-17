@@ -54,6 +54,7 @@ exports.validatePatientSignUpData = (data) => {
 
 	if (isEmpty(data.firstname)) errors.Name = 'Esse campo nao pode estar vazio';
 	if (isEmpty(data.lastname)) errors.Name = 'Esse campo nao pode estar vazio';
+	if (isEmpty(data.proid)) errors.proid = 'Esse campo nao pode estar vazio';
 	if (isEmpty(data.phoneNumber)) errors.phoneNumber = 'Esse campo nao pode estar vazio';
 	if (isEmpty(data.weight)) errors.weight = 'Esse campo nao pode estar vazio';
 	if (isEmpty(data.height)) errors.height = 'Esse campo nao pode estar vazio';

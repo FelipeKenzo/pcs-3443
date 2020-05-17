@@ -1,17 +1,19 @@
-const { database } = require('../util/admin');
+const { admin, database } = require('../util/admin');
 
 exports.add_profile = (request, response) => {
-    const new_profile = {
+    const forms = {
         id: request.body.id,
-        nome: request.body.name,
-        medicoId: request.body.doctorId,
+        firstname: request.body.firstname,
+        lastname: request.body.lastname,
     }
     
-    database.collection(request.body.role)
-    .doc(new_profile.id)
-    .set(new_profile)
+    database.collection('Paciente')
+    .doc(request.body.id)
+    .collection('forms')
+    .doc(request.body.date)
+    .set(forms)
     .then(() => {
-        return response.json(new_profile);
+        return response.json(forms);
     })
     .catch((error) => {
         return response.status(500).json({ error: error.code});
@@ -19,36 +21,44 @@ exports.add_profile = (request, response) => {
 }
 
 exports.get_profile = (request, response) => {
-    database.collection("Paciente").doc(request.body.id)
+    database.collection('Paciente')
+    // .doc(request.body.pacid)
+    .doc(request.body.id)
     .get()
     .then((doc) => {
-        let name;
-        let steps;
-        name = doc.data().nome;
-        steps = doc.data().num_passos;
-        return response.json({name: name, steps: steps });
+        let firstname;
+        let proid;
+        let height;
+        // let steps;
+        firstname = doc.data().firstname;
+        proid = doc.data().proid;
+        height = doc.data().height;
+        // steps = doc.data().num_passos;
+        return response.json({firstname: firstname, proid: proid, height: height });
     })
     .catch((error) => {
-       return response.status(500).json({ error: error.code });
+        console.error('Error while verifying token', error);
+        return response.status(403).json(error);
     });
+
 };
 
 exports.get_all_profiles = (request, response) => {
     database.collection("Paciente")
-    // .where('id', '==', request.user.id)
-    .where('nome', '==', 'teste')
+    .where('proid', '==', request.body.proid)
     .get()
     .then((data) => {
-        let name = [];
+        let datas = [];
         data.forEach((doc) => {
-            name.push({
-                nome: doc.data().nome,
+            datas.push({
+                firstname: doc.data().firstname,
+                phoneNumber: doc.data().phoneNumber,
             });
         });
         // let steps;
         // name = doc.data();
         // steps = doc.data().num_passos;
-        return response.json(name);
+        return response.json(datas);
     })
     .catch((error) => {
        return response.status(500).json({ error: error.code });

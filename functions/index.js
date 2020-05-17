@@ -25,13 +25,16 @@ const {
     signUpPatient
 } = require('./APIs/users');
 
-const auth = require('./util/auth');
+const {
+    authProfessional,
+    authPatient
+} = require('./util/auth');
 
-app.post('/profiles/', add_profile);
-app.get('/profile/', get_profile);
-app.get('/profiles/', auth, get_all_profiles);
-app.delete('/profiles/:PatientId', delete_profile);
-app.put('/profiles/:PatientId', update_profile);
+app.post('/profile', authPatient, add_profile);
+app.get('/profile/', authPatient, get_profile);
+app.get('/profiles/', authProfessional, get_all_profiles);
+app.delete('/profiles/:PatientId', authProfessional, delete_profile);
+app.put('/profiles/:PatientId', authProfessional, update_profile);
 
 app.post('/login', loginUser);
 app.post('/signup/professional', signUpProfessional);
