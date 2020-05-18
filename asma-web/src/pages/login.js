@@ -11,6 +11,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { authMiddleWare } from './util/auth';
+
 import axios from 'axios';
 
 const styles = (theme) => ({
@@ -54,13 +56,13 @@ class login extends Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.UI.errors) {
-			this.setState({
-				errors: nextProps.UI.errors
-			});
-		}
-	}
+	// componentWillReceiveProps({UI}) {
+	// 	if (UI.errors) {
+	// 		this.setState({
+	// 			errors: UI.errors
+	// 		});
+	// 	}
+	// }
 
 	handleChange = (event) => {
 		this.setState({
@@ -94,6 +96,24 @@ class login extends Component {
 				});
 			});
 	};
+
+	componentDidMount() {
+		authMiddleWare(this.props.history);
+		const authToken = localStorage.getItem('AuthToken');
+		axios.defaults.headers.common = { Authorization: `${authToken}` };
+		axios
+		  .get('/user')
+		  .then((response) => {
+			console.log(response.data);
+			this.props.history.push('/')
+		  })
+		  .catch((error) => {
+			if(error.response.status === 403) {
+			  this.props.history.push('/login')
+			}
+			console.log(error);
+		  });
+	}
 
 	render() {
 		const { classes } = this.props;

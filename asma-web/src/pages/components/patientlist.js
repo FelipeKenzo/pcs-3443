@@ -9,11 +9,9 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles } from '@material-ui/core/styles';
-import Chart from './patientdetails';
 import {authMiddleWare} from '../util/auth';
 
 import axios from 'axios';
@@ -115,13 +113,11 @@ function PatientList (props) {
     const [filterType, setFilterType] = React.useState("Nome");
     const [filterKey, setFilterKey] = React.useState(false);
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
-    const [render, setRender] = React.useState(false)
     const [filteredPatients, setFilteredPatients] = React.useState(patients);
 
     const classes = styles();
     
     React.useEffect(() => {
-        authMiddleWare(props.history);
         const authToken = localStorage.getItem('AuthToken');
         axios.defaults.headers.common = { authorization: `${authToken}` };
         axios
@@ -131,6 +127,7 @@ function PatientList (props) {
                     patient.name = patient.firstname + " " + patient.lastname;
                     return patient;
                 }));
+                localStorage.setItem('Patients', JSON.stringify(response.data));
                 setLoading(false);
             })
             .catch((err) => {
@@ -238,7 +235,7 @@ function PatientList (props) {
                         {filteredPatients.map((patient) => (
                             <Grid item sm={12} >
                                 <Card className={classes.root} variant="outlined">
-                                    <CardActionArea onClick={props.handleSelectPatient}>
+                                    <CardActionArea onClick={() => {props.handleSelectPatient(patient.email)}}>
                                         <CardContent>
                                             <Typography variant="h6" component="h5" noWrap>
                                                 {patient.firstname + " " + patient.lastname}

@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
   } from 'recharts';
@@ -21,46 +22,33 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-export default function PatientDetails(props) {
+export default function Statistics(props) {
     const classes = useStyles();
     const [data, setData] = React.useState("");
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-    React.useEffect(() => {
-        setData(JSON.parse(localStorage.getItem("Patients")).find((patient => patient.email === props.patientEmail)));
-    }, []);
+    // React.useEffect(() => {
+    //     setData(JSON.parse(localStorage.getItem("Patients")).find((patient => patient.email === props.patientEmail)));
+    // }, []);
 
-    React.useEffect(() => {
-        console.log(data);
-    }, [data]);
+    // React.useEffect(() => {
+    //     console.log(data);
+    // }, [data]);
 
     return (    
         <div>
             <Grid container spacing={3}>
                 <Grid item xs={12}> 
-                    <Button variant="contained" color="secondary" onClick={props.handleBackToList}>
-                        Voltar
-                    </Button>                  
-                </Grid>
-                <Grid item md={12} lg={3}>
-                    <Paper className={fixedHeightPaper} elevation={3}>
                     <Typography variant="h5">
-                        {data.name}
+                        Estatísticas
+                    </Typography>               
+                </Grid>
+                <Grid item sm={12}>
+                    <Paper className={fixedHeightPaper} elevation={3}>
+                    <Typography variant="h6">
+                        Média de Passos por Dia
                     </Typography>
                     <br />
-                    <Typography>
-                        Peso: {data.weight}
-                    </Typography>
-                    <Typography>
-                        altura: {data.height}
-                    </Typography>
-                    <Typography>
-                        telefone: {data.phoneNumber}
-                    </Typography>
-                    </Paper>
-                </Grid>
-                <Grid item md={12} lg={9}>
-                    <Paper className={fixedHeightPaper} elevation={3}>
                     <ResponsiveContainer>
                         <AreaChart width={"90%"} height={"90%"} data={data.goal_array}
                             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>

@@ -1,20 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { createBrowserHistory } from "history";
 import login from './pages/login';
 import signup from './pages/signup';
 import home from './pages/home';
-import Chart from './pages/components/patientdetails';
+
+const history = createBrowserHistory;
 
 function App() {
   return (
-    <Router>
-      <div>
+    <BrowserRouter history={history}>
+      <Switch>
         <Route exact path="/" component={home} />
         <Route exact path="/login" component={login} />
         <Route exact path="/signup" component={signup} />
-        <Route exact path="/chart" component={Chart} />
-      </div>
-    </Router>
+      </Switch>
+    </BrowserRouter>
   );
 }
 

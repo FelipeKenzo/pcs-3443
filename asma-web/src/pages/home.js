@@ -26,7 +26,8 @@ import axios from 'axios';
 import { authMiddleWare } from './util/auth';
 import PatientList from './components/patientlist';
 import RegisterPatient from './components/registerpatient';
-import PatientDetails from './components/patientdetails'
+import PatientDetails from './components/patientdetails';
+import Statistics from './components/statistics';
 
 
 const drawerWidth = 240;
@@ -103,6 +104,7 @@ export default function Home(props) {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [toRender, setRender] =  React.useState(0);
   const [renderDetails, setRenderDetails] = React.useState(false);
+  const [patientEmail, setPatientEmail] = React.useState("");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -129,42 +131,45 @@ export default function Home(props) {
     setRender(2);
   }
 
-  const handleSelectPatient = () =>   {
+  const handleSelectPatient = (patientEmail) =>   {
     setRenderDetails(true);
+    setPatientEmail(patientEmail);
   }
 
   const handleBackToList = () => {
     setRenderDetails(false);
   }
 
-  authMiddleWare(props.history);
-  const authToken = localStorage.getItem('AuthToken');
-  axios.defaults.headers.common = { Authorization: `${authToken}` };
-  axios
-    .get('/user')
-    .then((response) => {
-      console.log(response.data);
-      setLoggedIn(true);
-    })
-    .catch((error) => {
-      if(error.response.status === 403) {
-        props.history.push('/login')
-      }
-      console.log(error);
-    });
+  React.useEffect(() => {
+    authMiddleWare(props.history);
+    const authToken = localStorage.getItem('AuthToken');
+    axios.defaults.headers.common = { Authorization: `${authToken}` };
+    axios
+      .get('/user')
+      .then((response) => {
+        console.log(response.data);
+        setLoggedIn(true);
+      })
+      .catch((error) => {
+        if(error.response.status === 403) {
+          props.history.push('/login')
+        }
+        console.log(error);
+      });
+  }, []);
 
     let render;
     switch(toRender) {
       case 0:
         if (renderDetails) {
-          render = <PatientDetails handleBackToList={handleBackToList}/>;
+          render = <PatientDetails handleBackToList={handleBackToList} patientEmail={patientEmail}/>;
         }
         else {
           render = <PatientList handleSelectPatient={handleSelectPatient} history={props.history}/>;
         }
         break;
       case 1:
-        render = <h1>Stats</h1>;
+        render = <Statistics />;
         break;
       case 2:
         render = <RegisterPatient />;
