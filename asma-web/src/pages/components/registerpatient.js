@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 
 import axios from 'axios';
 
@@ -34,6 +38,10 @@ const styles = (theme) => ({
 	}
 });
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+  });
+
 class RegisterPatient extends Component {
 
 	constructor(props) {
@@ -49,7 +57,8 @@ class RegisterPatient extends Component {
 			password: '',
 			confirmPassword: '',
 			errors: [],
-			loading: false
+			loading: false,
+			open: false
 		};
 	}
 
@@ -77,8 +86,17 @@ class RegisterPatient extends Component {
 			.post('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/signup/patient', newPatientData)
 			.then((response) => {
 				this.setState({ 
+					firstname: '',
+					lastname: '',
+					email: '',
+					phoneNumber: '',
+					height: '',
+					weight: '',
+					password: '',
+					confirmPassword: '',
 					loading: false,
-				});	
+					open: true
+				});
 			})
 			.catch((error) => {
                 console.log(error);
@@ -88,6 +106,12 @@ class RegisterPatient extends Component {
 				});
 			});
 	};
+
+	handleClose = () => {
+		this.setState({
+			open: false
+		});
+	}
 
 	render() {
 		const { classes } = this.props;
@@ -112,6 +136,7 @@ class RegisterPatient extends Component {
 									helperText={errors.firstName}
 									error={errors.firstName ? true : false}
 									onChange={this.handleChange}
+									value={this.state.firstname}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -123,9 +148,10 @@ class RegisterPatient extends Component {
 									label="Sobrenome"
 									name="lastname"
 									autoComplete="lastname"
-									helperText={errors.lastName}
-									error={errors.lastName ? true : false}
+									helperText={errors.lastname}
+									error={errors.lastname ? true : false}
 									onChange={this.handleChange}
+									value={this.state.lastname}
 								/>
 							</Grid>
 
@@ -142,6 +168,7 @@ class RegisterPatient extends Component {
 									helperText={errors.height}
 									error={errors.height ? true : false}
 									onChange={this.handleChange}
+									value={this.state.height}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -157,6 +184,7 @@ class RegisterPatient extends Component {
 									helperText={errors.weight}
 									error={errors.weight ? true : false}
 									onChange={this.handleChange}
+									value={this.state.weight}
 								/>
 							</Grid>
 
@@ -165,13 +193,14 @@ class RegisterPatient extends Component {
 									variant="outlined"
 									required
 									fullWidth
-									id="email"
+									id="newemail"
 									label="Email"
 									name="email"
 									autoComplete="email"
 									helperText={errors.email}
 									error={errors.email ? true : false}
 									onChange={this.handleChange}
+									value={this.state.email}
 								/>
 							</Grid>
 
@@ -188,6 +217,7 @@ class RegisterPatient extends Component {
 									helperText={errors.telephone}
 									error={errors.telephone ? true : false}
 									onChange={this.handleChange}
+									value={this.state.phoneNumber}
 								/>
 							</Grid>
 
@@ -199,11 +229,12 @@ class RegisterPatient extends Component {
 									name="password"
 									label="Senha"
 									type="password"
-									id="password"
+									id="newpassword"
 									autoComplete="current-password"
 									helperText={errors.password}
 									error={errors.password ? true : false}
 									onChange={this.handleChange}
+									value={this.state.password}
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -217,6 +248,7 @@ class RegisterPatient extends Component {
 									id="confirmPassword"
 									autoComplete="current-password"
 									onChange={this.handleChange}
+									value={this.state.confirmPassword}
 								/>
 							</Grid>
 						</Grid>
@@ -240,6 +272,25 @@ class RegisterPatient extends Component {
 							Cadastrar
 							{loading && <CircularProgress size={30} className={classes.progess} />}
 						</Button>
+						<Dialog
+							open={this.state.open}
+							TransitionComponent={Transition}
+							keepMounted
+							onClose={this.handleClose}
+							aria-labelledby="alert-dialog-slide-title"
+							aria-describedby="alert-dialog-slide-description"
+						>
+							<DialogTitle id="alert-dialog-slide-title">{"Paciente cadastrado com sucesso."}</DialogTitle>
+							<DialogContent>
+							<DialogContentText id="alert-dialog-slide-description">
+							</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+							<Button onClick={this.handleClose} color="primary">
+								Fechar
+							</Button>
+							</DialogActions>
+						</Dialog>
 						{errors.general && (
 							<Typography variant="body2" className={classes.customError}>
 								{errors.general}

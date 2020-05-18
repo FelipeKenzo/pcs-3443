@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -116,6 +116,7 @@ function PatientList (props) {
     const [filterKey, setFilterKey] = React.useState(false);
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
     const [render, setRender] = React.useState(false)
+    const [filteredPatients, setFilteredPatients] = React.useState(patients);
 
     const classes = styles();
     
@@ -126,10 +127,16 @@ function PatientList (props) {
         axios
             .get('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/profiles')
             .then((response) => {
-                setPatients(response.data.sort((a, b) => a.firstname.localeCompare(b.firstname)));
+                setPatients(response.data.sort((a, b) => a.firstname.localeCompare(b.firstname)).map(function(patient) {
+                    patient.name = patient.firstname + " " + patient.lastname;
+                    return patient;
+                }));
                 setLoading(false);
             })
             .catch((err) => {
+                if(err.response.status === 403) {
+                    props.history.push('/login')
+                  }
                 console.log(err);
                 setPatients([]);
             });
@@ -149,8 +156,25 @@ function PatientList (props) {
     };
 
     const handleTextFieldChange = (e) => {
-        setFilterKey(e.target.value);
+        e.preventDefault();
+        setFilterKey(e.target.value.toUpperCase());
+        
     };
+
+    useEffect(() => {
+        setFilteredPatients(patients);
+    },[patients]);
+
+    useEffect(() => {
+        if (filterKey != "") {
+            setFilteredPatients(patients.filter(function(patient) {
+                return patient.name.toUpperCase().includes(filterKey);
+            }));
+        }
+        else {
+            setFilteredPatients(patients);
+        }
+    }, [filterKey]);
 
     if (loading === true) {
         return (
@@ -161,6 +185,7 @@ function PatientList (props) {
         );
     }
     else {
+        console.log(filteredPatients);
         return (
             <Grid container spacing={4}>
                 <Grid item xs={12}>
@@ -210,7 +235,7 @@ function PatientList (props) {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={1} maxWidth = "xs">
-                        {patients.map((patient) => (
+                        {filteredPatients.map((patient) => (
                             <Grid item sm={12} >
                                 <Card className={classes.root} variant="outlined">
                                     <CardActionArea onClick={props.handleSelectPatient}>

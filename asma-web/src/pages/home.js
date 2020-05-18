@@ -160,7 +160,7 @@ export default function Home(props) {
           render = <PatientDetails handleBackToList={handleBackToList}/>;
         }
         else {
-          render = <PatientList handleSelectPatient={handleSelectPatient}/>;
+          render = <PatientList handleSelectPatient={handleSelectPatient} history={props.history}/>;
         }
         break;
       case 1:
