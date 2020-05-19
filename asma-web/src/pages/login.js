@@ -97,23 +97,24 @@ class login extends Component {
 			});
 	};
 
-	componentDidMount() {
-		authMiddleWare(this.props.history);
-		const authToken = localStorage.getItem('AuthToken');
-		axios.defaults.headers.common = { Authorization: `${authToken}` };
-		axios
-		  .get('/user')
-		  .then((response) => {
-			console.log(response.data);
-			this.props.history.push('/')
-		  })
-		  .catch((error) => {
-			if(error.response.status === 403) {
-			  this.props.history.push('/login')
-			}
-			console.log(error);
-		  });
-	}
+	// componentDidMount() {
+	// 	if (localStorage.getItem != null) {
+	// 		const authToken = localStorage.getItem('AuthToken');
+	// 		axios.defaults.headers.common = { Authorization: `${authToken}` };
+	// 		axios
+	// 		.get('/user')
+	// 		.then((response) => {
+	// 			console.log(response.data);
+	// 			this.props.history.push('/')
+	// 		})
+	// 		.catch((error) => {
+	// 			if(error.response.status === 403) {
+	// 			this.props.history.push('/login')
+	// 			}
+	// 			console.log(error);
+	// 		});
+	// 	}
+	// }
 
 	render() {
 		const { classes } = this.props;

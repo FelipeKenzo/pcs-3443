@@ -42,7 +42,7 @@ export default function PatientDetails(props) {
                         Voltar
                     </Button>                  
                 </Grid>
-                <Grid item md={12} lg={3}>
+                <Grid item sm={12} md={3}>
                     <Paper className={fixedHeightPaper} elevation={3}>
                     <Typography variant="h5">
                         {data.name}
@@ -59,7 +59,7 @@ export default function PatientDetails(props) {
                     </Typography>
                     </Paper>
                 </Grid>
-                <Grid item md={12} lg={9}>
+                <Grid item sm={12} md={9}>
                     <Paper className={fixedHeightPaper} elevation={3}>
                     <ResponsiveContainer>
                         <AreaChart width={"90%"} height={"90%"} data={data.goal_array}

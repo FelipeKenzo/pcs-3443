@@ -6,13 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import SearchIcon from '@material-ui/icons/Search';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles } from '@material-ui/core/styles';
-import {authMiddleWare} from '../util/auth';
+import { authMiddleWare } from '../util/auth';
 
 import axios from 'axios';
 
@@ -54,8 +53,8 @@ const styles = makeStyles((theme) =>({
 	uiProgess: {
 		position: 'fixed',
 		zIndex: '1000',
-		height: '31px',
-		width: '31px',
+		height: '20px',
+		width: '20px',
 		left: '50%',
 		top: '35%'
 	},
@@ -82,33 +81,7 @@ const styles = makeStyles((theme) =>({
 }));
 
 function PatientList (props) {
-    const [patients, setPatients] = React.useState([
-        {
-            "id" : "1",
-            "firstname" : "Luca",
-            "lastname" : "Beraldo Basilio"
-        },
-        {
-            "id" : "2",
-            "firstname" : "Felipe Kenzo",
-            "lastname" : "Kusakawa Mashuda"    
-        },
-        {
-            "id" : "3",
-            "firstname" : "Bruno Guo",
-            "lastname" : "Lou Wei"    
-        },
-        {
-            "id" : "4",
-            "firstname" : "Tiago",
-            "lastname" : "Rivero Cavinatto"    
-        },
-        {
-            "id" : "5",
-            "firstname" : "Felipe",
-            "lastname" : "Miyaji Bilha"    
-        }
-    ]);
+    const [patients, setPatients] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [filterType, setFilterType] = React.useState("Nome");
     const [filterKey, setFilterKey] = React.useState(false);
@@ -132,7 +105,7 @@ function PatientList (props) {
             })
             .catch((err) => {
                 if(err.response.status === 403) {
-                    props.history.push('/login')
+                    props.history.push('/login');
                   }
                 console.log(err);
                 setPatients([]);
@@ -177,7 +150,7 @@ function PatientList (props) {
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {loading && <CircularProgress size={150} className={classes.uiProgess} />}
+                {loading && <CircularProgress size={60} className={classes.uiProgess} />}
             </main>
         );
     }

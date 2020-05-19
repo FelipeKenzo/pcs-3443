@@ -6,15 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-
-import axios from 'axios';
-
 const styles = (theme) => ({
 	paper: {
 		marginTop: theme.spacing(1),
@@ -38,80 +29,39 @@ const styles = (theme) => ({
 	}
 });
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-	return <Slide direction="up" ref={ref} {...props} />;
-  });
-
 class RegisterPatient extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			firstname: '',
-			lastName: '',
-            email: '',
-            phoneNumber: '',
-            height: '',
-            weight: '',
-			password: '',
-			confirmPassword: '',
-			errors: [],
-			loading: false,
-			open: false
-		};
+		
+		if (localStorage.getItem("registerPatient") != null) {
+			this.state = JSON.parse(localStorage.getItem("registerPatient"));
+			console.log(localStorage.getItem("registerPatient"));
+		}
+		else {
+			this.state = {
+				firstname: '',
+				lastName: '',
+				email: '',
+				phoneNumber: '',
+				height: '',
+				weight: '',
+				password: '',
+				confirmPassword: '',
+				errors: [],
+				loading: false,
+				open: false
+			};
+		}
 	}
 
 	handleChange = (event) => {
 		this.setState({
 			[event.target.name]: event.target.value
+		}, () => {
+			localStorage.setItem("registerPatient", JSON.stringify(this.state));
 		});
 	};
-
-	handleSubmit = (event) => {
-		event.preventDefault();
-		this.setState({ loading: true });
-		const newPatientData = {
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
-            email: this.state.email,
-            phoneNumber: this.state.phoneNumber,
-            height: this.state.height,
-            weight: this.state.weight,
-            password: this.state.password,
-			confirmPassword: this.state.confirmPassword,
-			proid: localStorage.getItem('proId')
-		};
-		axios
-			.post('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/signup/patient', newPatientData)
-			.then((response) => {
-				this.setState({ 
-					firstname: '',
-					lastname: '',
-					email: '',
-					phoneNumber: '',
-					height: '',
-					weight: '',
-					password: '',
-					confirmPassword: '',
-					loading: false,
-					open: true
-				});
-			})
-			.catch((error) => {
-                console.log(error);
-				this.setState({
-					errors: error.response.data,
-					loading: false
-				});
-			});
-	};
-
-	handleClose = () => {
-		this.setState({
-			open: false
-		});
-	}
 
 	render() {
 		const { classes } = this.props;
@@ -231,8 +181,7 @@ class RegisterPatient extends Component {
 									type="password"
 									id="newpassword"
 									autoComplete="current-password"
-									helperText={errors.password}
-									error={errors.password ? true : false}
+									error={errors.confirmPassword ? true : false}
 									onChange={this.handleChange}
 									value={this.state.password}
 								/>
@@ -246,6 +195,8 @@ class RegisterPatient extends Component {
 									label="Confirmar Senha"
 									type="password"
 									id="confirmPassword"
+									helperText={errors.confirmPassword}
+									error={errors.confirmPassword ? true : false}
 									autoComplete="current-password"
 									onChange={this.handleChange}
 									value={this.state.confirmPassword}
@@ -257,9 +208,9 @@ class RegisterPatient extends Component {
 							fullWidth
 							variant="contained"
 							color="primary"
-							label="Registrar"
+							label="Continuar para Questionário"
 							className={classes.submit}
-							onClick={this.handleSubmit}
+							onClick={this.props.handleToQuestionnaire}
 							disabled={loading || 
 								!this.state.firstname ||
 								!this.state.lastname ||
@@ -269,28 +220,10 @@ class RegisterPatient extends Component {
 								!this.state.password ||
 								!this.state.confirmPassword}
 						>
-							Cadastrar
+							Continuar para Questionário
 							{loading && <CircularProgress size={30} className={classes.progess} />}
 						</Button>
-						<Dialog
-							open={this.state.open}
-							TransitionComponent={Transition}
-							keepMounted
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-slide-title"
-							aria-describedby="alert-dialog-slide-description"
-						>
-							<DialogTitle id="alert-dialog-slide-title">{"Paciente cadastrado com sucesso."}</DialogTitle>
-							<DialogContent>
-							<DialogContentText id="alert-dialog-slide-description">
-							</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-							<Button onClick={this.handleClose} color="primary">
-								Fechar
-							</Button>
-							</DialogActions>
-						</Dialog>
+						
 						{errors.general && (
 							<Typography variant="body2" className={classes.customError}>
 								{errors.general}

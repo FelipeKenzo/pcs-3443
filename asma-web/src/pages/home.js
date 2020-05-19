@@ -20,6 +20,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import CreateIcon from '@material-ui/icons/Create';
+import Grid from '@material-ui/core/Grid'
 
 import axios from 'axios';
 
@@ -28,9 +29,11 @@ import PatientList from './components/patientlist';
 import RegisterPatient from './components/registerpatient';
 import PatientDetails from './components/patientdetails';
 import Statistics from './components/statistics';
+import PreQuestionnaire from './components/prequestionnaire';
 
 
 const drawerWidth = 240;
+const logo = require("../images/logo_white.png")
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,8 +106,9 @@ export default function Home(props) {
   const [open, setOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [toRender, setRender] =  React.useState(0);
-  const [renderDetails, setRenderDetails] = React.useState(false);
   const [patientEmail, setPatientEmail] = React.useState("");
+  const [renderDetails, setRenderDetails] = React.useState(false);
+  const [renderQuestionnaire, setRenderQuestionnaire] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -116,6 +120,9 @@ export default function Home(props) {
 
   const logOutHandler = () => {
     localStorage.removeItem('AuthToken');
+    localStorage.removeItem('Patients');
+    localStorage.removeItem('registerPatient');
+
     props.history.push('/login');
   }
 
@@ -131,13 +138,33 @@ export default function Home(props) {
     setRender(2);
   }
 
+  const renderPatient = () => {
+    setRender(3);
+  }
+  
+  const renderPrequestionnaire = () => {
+    setRender(4);
+  }
+  
   const handleSelectPatient = (patientEmail) =>   {
+    setRender(3);
     setRenderDetails(true);
     setPatientEmail(patientEmail);
   }
-
+  
   const handleBackToList = () => {
     setRenderDetails(false);
+    setRender(0);
+  }
+
+  const handleToQuestionnaire = () => {
+    setRender(4);
+    setRenderQuestionnaire(true);
+  }
+
+  const handleBackToRegister = () => {
+    setRender(2);
+    setRenderQuestionnaire(false);
   }
 
   React.useEffect(() => {
@@ -161,18 +188,19 @@ export default function Home(props) {
     let render;
     switch(toRender) {
       case 0:
-        if (renderDetails) {
-          render = <PatientDetails handleBackToList={handleBackToList} patientEmail={patientEmail}/>;
-        }
-        else {
-          render = <PatientList handleSelectPatient={handleSelectPatient} history={props.history}/>;
-        }
+        render = <PatientList handleSelectPatient={handleSelectPatient} history={props.history} />;
         break;
       case 1:
         render = <Statistics />;
         break;
       case 2:
-        render = <RegisterPatient />;
+        render = <RegisterPatient handleToQuestionnaire={handleToQuestionnaire} />;
+        break;
+      case 3:
+        render = <PatientDetails handleBackToList={handleBackToList} patientEmail={patientEmail} />;
+        break;
+      case 4:
+        render = <PreQuestionnaire handleBackToRegister={handleBackToRegister} />
         break;
     }
 
@@ -181,6 +209,7 @@ export default function Home(props) {
       <CssBaseline />
       <AppBar
         position="fixed"
+        color="primary"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -197,18 +226,20 @@ export default function Home(props) {
 							<MenuIcon />
 						</IconButton>
 					}
-          <Typography variant="h6" noWrap className={classes.typographyFlex}>
-            {loggedIn ? "Olá!" : "Login necessário."}
-          </Typography>
-          <Typography variant="h6" noWrap className={classes.typographyFlex}>
-            RespireHC
-          </Typography>
-					<IconButton
-							color="inherit"
-							className={clsx(classes.gearButton, loggedIn === false && classes.hide)}
-					>
-						<SettingsIcon />
-					</IconButton>
+            <Typography variant="h6" noWrap className={classes.typographyFlex}>
+              {loggedIn ? "Olá!" : "Login necessário."}
+            </Typography>
+            {/*<Typography variant="h6" noWrap className={classes.typographyFlex}>
+              RespireHC
+          </Typography>*/}
+            <img src={logo} width="79px" height="50px" style={{ marginRight:'35%' }}/>
+
+            <IconButton
+                color="inherit"
+                className={clsx(classes.gearButton, loggedIn === false && classes.hide)}
+            >
+              <SettingsIcon />
+            </IconButton>
 					<Button 
 						variant="contained" 
 						color="secondary"
@@ -236,7 +267,7 @@ export default function Home(props) {
           </IconButton>
         </div>
         <List>
-          <ListItem divider button key="acomp" onClick={renderAcomp}>
+          <ListItem divider button key="acomp" onClick={renderDetails ? renderPatient : renderAcomp}>
             <ListItemIcon><RecentActorsIcon /></ListItemIcon>
             <ListItemText primary="Acompanhamento" />
           </ListItem>
@@ -244,7 +275,7 @@ export default function Home(props) {
           <ListItemIcon><TimelineIcon /></ListItemIcon>
             <ListItemText primary="Estatísticas" />
           </ListItem>
-          <ListItem divider button key="regist" onClick={renderReg}>
+          <ListItem divider button key="regist" onClick={renderQuestionnaire? renderPrequestionnaire : renderReg}>
             <ListItemIcon><CreateIcon /></ListItemIcon>
             <ListItemText primary="Registrar Paciente" />
           </ListItem>
