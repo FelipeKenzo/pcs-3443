@@ -48,9 +48,9 @@ class _FChartState extends State<FChartsApp> {
     Future fetchRecords() async {
       Data data = Data.fromJson(await sharedPref.read("Data"));
       dt = [
-        Record(data.goal_array[2].date, data.goal_array[2].steps, 1000),
-        Record(data.goal_array[1].date, data.goal_array[1].steps, 2000),
-        Record(data.goal_array[0].date, data.goal_array[0].steps, 2500),
+        Record(data.goal_array[2].date, int.parse(data.goal_array[2].steps), 1000),
+        Record(data.goal_array[1].date, int.parse(data.goal_array[1].steps), 2000),
+        Record(data.goal_array[0].date, int.parse(data.goal_array[0].steps), 2500),
         // Record(days[3], 10, 5),
       ];
       print('${data.goal_array[2].steps} ${data.goal_array[1].steps} ${data.goal_array[0].steps}');
@@ -138,7 +138,7 @@ class _RecordLineChartState extends State<RecordLineChart> {
             stroke: const PaintOptions.stroke(color: Colors.blue),
             legend: new LegendItem(
               paint: const PaintOptions.fill(color: Colors.blue),
-              text: 'Meta',
+              text: 'Histórico',
             ),
           ),
 
@@ -162,7 +162,7 @@ class _RecordLineChartState extends State<RecordLineChart> {
             stroke: const PaintOptions.stroke(color: Colors.green),
             legend: new LegendItem(
               paint: const PaintOptions.fill(color: Colors.green),
-              text: 'Histórico',
+              text: 'Meta',
             ),
           ),
         ],

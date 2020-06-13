@@ -119,9 +119,8 @@ class _ExercisesState extends State<Exercises> {
                     innerWidget: viewModel.innerWidget,
                     appearance: viewModel.appearance,
                     min: viewModel.min,
-                    max: snapshot.data.goal_array[2].steps.toDouble(),
-                    // max: snapshot.data,
-                    initialValue: viewModel.value,
+                    max: 1000.0, //Todo: necessario pegar a meta do banco de dados
+                    initialValue: int.parse(snapshot.data.goal_array[2].steps).toDouble(),
                   )
                 ),
               ),

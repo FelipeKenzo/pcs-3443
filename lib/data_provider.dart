@@ -25,7 +25,7 @@ class SharedPref {
 }
 
 class Steps {
-  final int steps;
+  final String steps;
   final String date;
 
   Steps({this.date, this.steps});
@@ -95,7 +95,7 @@ Future<Data> fetchData() async {
       if (response.statusCode == 200) {
         print(response.body.substring(1, response.body.length-1));
         var resp = response.body.substring(1, response.body.length-1);
-        // print(json.decode(response.body));
+        print(json.decode(response.body));
         // print(json.decode(response.body)[0]);
         Data result = new Data.fromJson(json.decode(resp));
         print(result.goal_array[0].steps);
