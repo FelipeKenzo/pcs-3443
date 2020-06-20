@@ -5,7 +5,7 @@ import 'dart:async';
 import 'login_page.dart';
 import 'languages_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -28,6 +28,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         builder: (context) => LoginPage() 
       )
     );
+  }
+
+  Future Identificador() async {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if (user != null) {
+      user.getIdToken().then((token) async {
+        const url = "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BLT8&redirect_uri=https://1ydxeyszp4.execute-api.sa-east-1.amazonaws.com/Beta/auth&scope=activity%20heartrate&expires_in=31536000&state=";
+        if (await canLaunch(url+ user.email)) {
+          await launch(url+ user.email);
+            } else {
+        throw 'Could not launch';
+        }
+        print("https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BLT8&redirect_uri=https://1ydxeyszp4.execute-api.sa-east-1.amazonaws.com/Beta/auth&scope=activity%20heartrate&expires_in=31536000&state=" + user.email);
+      });
+    }
   }
 
   @override
@@ -60,6 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
               SettingsTile(title: 'Email', leading: Icon(Icons.email)),
               SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app), onTap: () => logout(),),
+              SettingsTile(title: 'Data', leading: Icon(Icons.tablet_android), onTap: () => Identificador()),
             ],
           ),
           SettingsSection(

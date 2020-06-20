@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'settings.dart';
+import 'FAQ.dart';
+import 'treino.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -36,7 +38,17 @@ class AppDrawer extends StatelessWidget {
             title: Text('FAQ'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new FAQ()));
             },
+          ),
+          ListTile(
+            leading: Icon(Icons.fitness_center),
+            title: Text('Exercícios'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new Treino()));
+            },
+
           ),
         ],
       ),

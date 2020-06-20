@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^0.5.7+2
   flutter_form_bloc: ^0.14.0
   splashscreen: ^1.2.0
+  url_launcher: ^5.4.2
   intl: 
 
   # The following adds the Cupertino Icons font to your application.
@@ -93,6 +94,8 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/logo.png
+    - assets/Caminhada.png
+    - assets/natacao.png
 
   fonts:
     - family: Nunito
