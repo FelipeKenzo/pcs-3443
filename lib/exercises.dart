@@ -35,7 +35,8 @@ var info03 = InfoProperties(
     fontWeight: FontWeight.w200
   ),
   modifier: (double value) {
-    final steps = value.toInt();
+    var steps;
+    steps = value.toInt();
     return '$steps passos';
   }
 );
@@ -87,8 +88,12 @@ class _ExercisesState extends State<Exercises> {
 
   Future<Data> fetchGoal() async {
     Data dt = Data.fromJson(await sharedPref.read("Data"));
-    print(dt.goal_array[2].steps);
-    info03.bottomLabelText = 'Meta: ${dt.goal_array[2].steps} passos';
+    var meta = dt.goal_array[2].goal;
+    if (dt.goal_array[2].goal == '0') {
+      meta = '1000';
+    }
+    // print("goal array[2]: ${dt.goal_array[2].goal}");
+    info03.bottomLabelText = 'Meta: ${meta} passos';
     return dt;
   }
 
@@ -102,6 +107,10 @@ class _ExercisesState extends State<Exercises> {
           // } else {
           if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
             final ExampleViewModel viewModel = viewModel03;
+            var max_value = int.parse(snapshot.data.goal_array[2].goal).toDouble();
+            if (max_value == 0) {
+              max_value = 1000.0;
+            }
             return Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -119,8 +128,8 @@ class _ExercisesState extends State<Exercises> {
                     innerWidget: viewModel.innerWidget,
                     appearance: viewModel.appearance,
                     min: viewModel.min,
-                    max: 1000.0, //Todo: necessario pegar a meta do banco de dados
-                    initialValue: int.parse(snapshot.data.goal_array[2].steps).toDouble(),
+                    max: max_value,
+                    initialValue: int.parse(snapshot.data.history_array[2].steps).toDouble(),
                   )
                 ),
               ),
@@ -138,6 +147,4 @@ class _ExercisesState extends State<Exercises> {
     );
   }
 }
-
-
 

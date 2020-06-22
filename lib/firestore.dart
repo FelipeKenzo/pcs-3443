@@ -14,6 +14,7 @@ Future sendForms(dynamic st) async {
       // final idToken = token.token;
       // final header = 'Bearer $idToken';
       // var date = dateFormatter.format(DateTime.now())
+    var docid;
     final file = await Firestore.instance
     .collection('Paciente')
     .document(user.email)
@@ -22,17 +23,23 @@ Future sendForms(dynamic st) async {
     .limit(1)
     .getDocuments();
 
+    file.documents.forEach((data) {
+      docid = data.documentID;
+      print(docid);
+    });
+
     final len = file.documents.length;
-    print(len);
-    if (len == 1) {
-      return Future.value(false);
-    }
+    // print(len);
+    // if (len == 1) {
+    //   return Future.value(false);
+    // }
     // print(user.email);
     await Firestore.instance
     .collection('Paciente')
     .document(user.email)
     .collection('Diario')
-    .add(st);
+    .document(docid)
+    .updateData(st);
     return Future.value(true);
     // });
   }

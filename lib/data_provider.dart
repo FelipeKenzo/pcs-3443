@@ -24,6 +24,7 @@ class SharedPref {
   }
 }
 
+// history steps
 class Steps {
   final String steps;
   final String date;
@@ -41,7 +42,29 @@ class Steps {
   // Map object to json
   Map toJson() => {
     'steps': steps,
-    'date': date,
+    'date': date
+  };
+}
+
+// goal
+class Goal {
+  final String goal;
+  final String date;
+
+  Goal({this.date, this.goal});
+
+  // Map json to object
+  factory Goal.fromJson(Map<String, dynamic> json) {
+    return Goal(
+      goal: json['goal'],
+      date: json['date'],
+    );
+  }
+
+  // Map object to json
+  Map toJson() => {
+    'goal': goal,
+    'date': date
   };
 }
 
@@ -49,31 +72,37 @@ class Data {
   final String firstname;
   final String lastname;
   final String height;
-  final List<Steps> goal_array;
+  final List<Steps> history_array;
+  final List<Goal> goal_array;
 
-  Data({this.firstname, this.lastname, this.height, this.goal_array});
+  Data({this.firstname, this.lastname, this.height, this.goal_array, this.history_array});
 
   // Map json to object
   factory Data.fromJson(Map<String, dynamic> json) {
-    var list = json['goal_array'] as List;
+    var list = json['history_array'] as List;
     List<Steps> stepsList = list.map((i) => Steps.fromJson(i)).toList();
+    var lst = json['goal_array'] as List;
+    List<Goal> stepsLst = lst.map((i) => Goal.fromJson(i)).toList();
 
     return Data(
       firstname: json['firstname'],
       lastname: json['lastname'],
       height: json['height'],
-      goal_array: stepsList,
+      goal_array: stepsLst,
+      history_array: stepsList,
     );
   }
 
   // Map object to json
   Map toJson() {
     List<Map> ga = this.goal_array != null ? this.goal_array.map((i) => i.toJson()).toList() : null;
+    List<Map> ha = this.history_array != null ? this.history_array.map((i) => i.toJson()).toList() : null;
     return {
       'firstname': this.firstname,
       'lastname': this.lastname,
       'height': this.height,
-      'goal_array': ga
+      'goal_array': ga,
+      'history_array': ha
     };
   }
 }
@@ -95,10 +124,11 @@ Future<Data> fetchData() async {
       if (response.statusCode == 200) {
         print(response.body.substring(1, response.body.length-1));
         var resp = response.body.substring(1, response.body.length-1);
-        print(json.decode(response.body));
+        // print(json.decode(response.body));
         // print(json.decode(response.body)[0]);
         Data result = new Data.fromJson(json.decode(resp));
-        print(result.goal_array[0].steps);
+        // print(result.history_array[0].steps);
+        print(result.history_array[0].steps);
         sharedPref.save('Data', result);
         return result;
       } else {

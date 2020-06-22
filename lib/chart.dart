@@ -48,12 +48,12 @@ class _FChartState extends State<FChartsApp> {
     Future fetchRecords() async {
       Data data = Data.fromJson(await sharedPref.read("Data"));
       dt = [
-        Record(data.goal_array[2].date, int.parse(data.goal_array[2].steps), 1000),
-        Record(data.goal_array[1].date, int.parse(data.goal_array[1].steps), 2000),
-        Record(data.goal_array[0].date, int.parse(data.goal_array[0].steps), 2500),
+        Record(data.history_array[2].date, int.parse(data.history_array[2].steps), int.parse(data.goal_array[2].goal)),
+        Record(data.history_array[1].date, int.parse(data.history_array[1].steps), int.parse(data.goal_array[1].goal)),
+        Record(data.history_array[0].date, int.parse(data.history_array[0].steps), int.parse(data.goal_array[0].goal)),
         // Record(days[3], 10, 5),
       ];
-      print('${data.goal_array[2].steps} ${data.goal_array[1].steps} ${data.goal_array[0].steps}');
+      // print('${data.history_array[2].steps} ${data.history_array[1].steps} ${data.history_array[0].steps}');
       return dt;
     }
 
@@ -127,7 +127,7 @@ class _RecordLineChartState extends State<RecordLineChart> {
             xAxis: xAxis,
             yAxis: new ChartAxis(
               // tickLabelFn: (goal) => goal.toString().split("\.")[1],
-              span: new IntSpan(1000, 6000),
+              span: new IntSpan(0, 6000),
               tickGenerator: IntervalTickGenerator.byN(1000),
               tickLabelerStyle: new TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               paint: const PaintOptions.stroke(color: Colors.blue),
@@ -149,7 +149,7 @@ class _RecordLineChartState extends State<RecordLineChart> {
             yFn: (rec) => rec.record,
             xAxis: xAxis,
             yAxis: new ChartAxis(
-              span: new IntSpan(1000, 6000),
+              span: new IntSpan(0, 6000),
               opposite: true,
               tickGenerator: IntervalTickGenerator.byN(1000),
               paint: const PaintOptions.stroke(color: Colors.green),
