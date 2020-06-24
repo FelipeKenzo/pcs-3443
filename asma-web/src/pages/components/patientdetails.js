@@ -18,6 +18,7 @@ import axios from 'axios';
 import SymptomHistory from './symptomhistory';
 import AcqHistory from './acqhistory';
 import PatientInfo from './patientinfo';
+import SpreadsheetGenerator from './spreadsheetgen';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -46,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
     },
     height10: {
         height: '10%',
+    },
+    exportButton: {
     },
 }));
 
@@ -83,7 +86,6 @@ export default function PatientDetails(props) {
     }, []);
 
     React.useEffect(() => {
-        console.log("O fim.");
         console.log(data);
     }, [data]);
 
@@ -100,15 +102,27 @@ export default function PatientDetails(props) {
         return (    
             <div>
                 <Grid container spacing={3}>
-                    <Grid item xs={12}> 
-                        <Button 
-                            variant="contained"
-                            color="secondary" 
-                            onClick={props.handleBackToList}
-                            startIcon={<ArrowLeftIcon />}
-                        >
-                            Voltar
-                        </Button>                  
+                    <Grid item xs={12} className={classes}>
+                        <Grid container spacing={5} >
+                            <Grid item xs={1} justify="flex-start">
+                                <Button 
+                                    variant="contained"
+                                    color="secondary" 
+                                    onClick={props.handleBackToList}
+                                    startIcon={<ArrowLeftIcon />}
+                                >
+                                    Voltar
+                                </Button>
+                            </Grid>
+                            <Grid item xs={9}>
+                                <Typography variant="h4" align="center">
+                                    Acompanhamento
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={2} display="flex" justify="flex-end">
+                                <SpreadsheetGenerator data={data} />
+                            </Grid>
+                        </Grid>        
                     </Grid>
                     <Grid item sm={12} md={3}>
                             <Grid item xs={12}>
@@ -144,19 +158,19 @@ export default function PatientDetails(props) {
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h4">
+                        <Typography variant="h5">
                             Diário de Sintomas
                         </Typography>
                         <SymptomHistory data={data.sintomas}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h4">
+                        <Typography variant="h5">
                             Questionário de Acompanhamento de Sintomas
                         </Typography>
                         <AcqHistory data={data.acq}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h4">
+                        <Typography variant="h5">
                             Barreiras ao Exercício
                         </Typography>
                     </Grid>

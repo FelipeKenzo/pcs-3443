@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -40,9 +41,8 @@ const styles = makeStyles((theme) =>({
 	},
 	toolbar: theme.mixins.toolbar,
 	root: {
-        minWidth: 470,
         maxWidth:  '80%',
-        marginLeft: '5%'
+        marginLeft: 10
 	},
 	bullet: {
 		display: 'inline-block',
@@ -74,7 +74,7 @@ const styles = makeStyles((theme) =>({
 		color: theme.palette.grey[500]
     },
     fullWidth: {
-        width: '100%'    
+        width: '100%' 
     },
     typographyStyle: {
         position: 'relative',
@@ -158,54 +158,50 @@ function PatientList (props) {
     else {
         console.log(filteredPatients);
         return (
-            <Grid container spacing={4}>
-                <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={8}>
-                            <TextField 
-                                id="chave" 
-                                label="Filtro" 
-                                variant="outlined" 
-                                className={classes.fullWidth} 
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position='end'>
-                                            <SearchIcon />
-                                        </InputAdornment>
-                                    )
-                                }}
-                                onChange={handleTextFieldChange}
-                            />
-                        </Grid>  
-                        <Grid item xs={4}>
-                            <Grid container spacing={1}>
-                                <Grid item xs={4}>
-                                    <Typography variant="h5" component="h6" noWrap className={classes.typographyStyle}>
-                                        Filtrar por:  
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Select
-                                        open={dropdownOpen}
-                                        onOpen={handleDropdownOpen}
-                                        onClose={handleDropdownClose}
-                                        onChange={handleDropdownChange}
-                                        value={filterType}
-                                        className={classes.fullWidth, classes.typographyStyle}
-                                        displayEmpty
-                                        renderValue={() => { return filterType; }}
-                                    >
-                                        <MenuItem value="Nome">Nome</MenuItem>
-                                        <MenuItem value="RGHC">RGHC</MenuItem>
-                                    </Select>         
-                                </Grid>
-                            </Grid>
-                                            
-                        </Grid>
-                    </Grid>
-                </Grid>
+            <Box >
+                <Box display="flex" justifyContent="flex-start" my={2}>
+                    <Box mx={2} minWidth={0.6}>
+                        <TextField 
+                            id="chave" 
+                            label="Filtro" 
+                            variant="outlined" 
+                            className={classes.fullWidth}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position='end'>
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                )
+                            }}
+                            onChange={handleTextFieldChange}
+                        />
+                    </Box>  
+                    <Box display="flex" alignItems="center">
+                        
+                        
+                        <Box mx={2}><Typography   className={classes.typographyStyle}>
+                            Filtrar por:  
+                        </Typography></Box>
+                        
+                        <Box ><Select
+                            open={dropdownOpen}
+                            onOpen={handleDropdownOpen}
+                            onClose={handleDropdownClose}
+                            onChange={handleDropdownChange}
+                            value={filterType}
+                            className={ classes.typographyStyle}
+                            displayEmpty
+                            renderValue={() => { return filterType; }}
+                        >
+                            <MenuItem value="Nome">Nome</MenuItem>
+                            <MenuItem value="RGHC">RGHC</MenuItem>
+                        </Select></Box>         
+                        
+                    </Box>
+                </Box>
             
-                <Grid item xs={12} id="blocoLista" >
+            
+                <Box id="blocoLista" >
                     <Grid container spacing={1} maxWidth = "xs">
                         {filteredPatients.map((patient) => (
                             <Grid item sm={12} style={{ width: '100%' }} display="flex" justifyContent="center" >
@@ -221,9 +217,9 @@ function PatientList (props) {
                             </Grid>
                         ))}
                     </Grid>
-                </Grid>
-          
-            </Grid>
+                </Box>
+            </Box>
+            
         );
         
     }

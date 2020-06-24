@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
         flexShrink: 0,
         alignItem: 'left',
         marginLeft: theme.spacing(-1),
-    }
+    },
 }));
 
 function TablePaginationActions(props) {

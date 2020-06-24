@@ -9,10 +9,30 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import axios from 'axios';
+    
+const styles = makeStyles((theme) => ({
+    progess: {
+        position: 'absolute'
+    },
+}));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 export default function PatientInfo(props) {
     const data = props.data;
+    const classes = styles();
     const [isEditing, toggleEditing] = React.useState(false);
     const [firstName, setFirstName] = React.useState(data.firstname);
     const [lastName, setLastName] = React.useState(data.lastname);
@@ -20,6 +40,9 @@ export default function PatientInfo(props) {
     const [weight, setWeight] = React.useState(data.weight);
     const [phone, setPhone] = React.useState(data.phoneNumber);
     const [goal, setGoal] = React.useState(data.goal_array[0].goal);
+    const [isLoading, setLoading] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+
 
     const handleEditClick = () => {
         toggleEditing(true);
@@ -35,9 +58,36 @@ export default function PatientInfo(props) {
         toggleEditing(false);
     }
 
-    const handleSaveClick = () => {
-        // KENZOOOOOOO BRUNOOOOOO
+    const handleClose = () => {
+        setOpen(false);
         toggleEditing(false);
+    }
+
+    const handleSaveClick = (event) => {
+        const authToken = localStorage.getItem('AuthToken');
+        event.preventDefault();
+        setLoading(true);
+        const updateData = {
+            id: data.email,
+            firstname: firstName,
+            lastname: lastName,
+            phoneNumber: phone,
+            height: height,
+            weight: weight
+        }
+        axios.defaults.headers.common = { authorization: `${authToken}` };
+        axios
+            .put('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/profiles', updateData)
+            .then((response) => {
+                setLoading(false);
+                setOpen(true);
+            })
+            .catch((err) => {
+                if(err.response.status === 403) {
+                    props.history.push('/login');
+                  }
+                console.log(err);
+            });
     }
 
     const handleFirstNameChange = (e) => {
@@ -158,22 +208,52 @@ export default function PatientInfo(props) {
             
             <Box display="flex" height="10%" justifyContent="flex-end">
                 {isEditing ? 
-                    <div><Button mx={0.5} 
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<ClearIcon />}
-                        onClick={handleCancelClick}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button mx={0.5} 
-                        variant="contained"
-                        color="primary"
-                        startIcon={<SaveIcon />}
-                        onClick={handleSaveClick}
-                    >
-                        Salvar
-                    </Button></div>
+                    <div style={{width:'100%'}}>
+                    <Box display="flex" justifyContent="flex-end">
+                        <Box mx={0.5}>
+                            <Button mx={0.5} 
+                                variant="contained"
+                                color="secondary"
+                                startIcon={<ClearIcon />}
+                                onClick={handleCancelClick}
+                            >
+                                Cancelar
+                            </Button>
+                        </Box>
+
+                        <Box mx={0.5}>
+                            <Button mx={0.5} 
+                                variant="contained"
+                                color="primary"
+                                startIcon={<SaveIcon />}
+                                onClick={handleSaveClick}
+                            >
+                                Salvar
+                                {isLoading && <CircularProgress size={30} className={classes.progess} />}
+                            </Button>
+                            <Dialog
+                                open={open}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={handleClose}
+                                aria-labelledby="alert-dialog-slide-title"
+                                aria-describedby="alert-dialog-slide-description"
+                            >
+                                <DialogTitle id="alert-dialog-slide-title">{"Paciente editado com sucesso."}</DialogTitle>
+                                <DialogContent>
+                                <DialogContentText id="alert-dialog-slide-description">
+                                </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                <Button onClick={handleClose} color="primary">
+                                    Fechar
+                                </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </Box>
+                    </Box>
+                    </div>
+
                     :<Button
                     variant="contained"
                     color="primary"

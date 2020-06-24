@@ -9,6 +9,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -245,7 +246,9 @@ export default function Home(props) {
             {/*<Typography variant="h6" noWrap className={classes.typographyFlex}>
               RespireHC
           </Typography>*/}
-            <img src={logo} width="79px" height="50px" style={{ marginRight:'35%' }}/>
+            <Box flex="1">
+              <img src={logo} width="79px" height="50px" />
+            </Box>
 
             <IconButton
                 color="inherit"

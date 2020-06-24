@@ -112,16 +112,15 @@ export default function SymptomHistory(props) {
             let symptoms = data[i].sintomas;
             let checklist = [false, false, false, false, false];
             for (var j = 0; j < symptoms.length; j++) {
-                if (symptoms[j] == "Tosse") checklist[0] = true;
-                if (symptoms[j] == "Chiado") checklist[1] = true;
-                if (symptoms[j] == "Falta de ar") checklist[2] = true;
-                if (symptoms[j] == "Acordar") checklist[3] = true;
-                if (symptoms[j] == "Bombinha") checklist[4] = true;
+                checklist[0] = (symptoms[j] == "Tosse");
+                checklist[1] = (symptoms[j] == "Chiado");
+                checklist[2] = (symptoms[j] == "Falta de ar");
+                checklist[3] = (symptoms[j] == "Acordar");
+                checklist[4] = (symptoms[j] == "Bombinha");
             }
             rows.push(createData(data[i].date, checklist));
         }
     }
-   
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
