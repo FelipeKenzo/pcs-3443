@@ -20,6 +20,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import CreateIcon from '@material-ui/icons/Create';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 
 import axios from 'axios';
@@ -109,6 +110,17 @@ export default function Home(props) {
   const [patientEmail, setPatientEmail] = React.useState("");
   const [renderDetails, setRenderDetails] = React.useState(false);
   const [renderQuestionnaire, setRenderQuestionnaire] = React.useState(false);
+  const [darkMode, setDarkMode] = React.useState(false);
+
+  // const theme = React.useMemo(
+  //   () =>
+  //     createMuiTheme({
+  //       palette: {
+  //         type: darkMode ? 'dark' : 'light',
+  //       },
+  //     }),
+  //   [darkMode],
+  // );
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -206,6 +218,7 @@ export default function Home(props) {
 
   return (
     <div className={classes.root}>
+      <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -242,7 +255,7 @@ export default function Home(props) {
             </IconButton>
 					<Button 
 						variant="contained" 
-						color="secondary"
+						color="default"
 						onClick={logOutHandler}>
 						{loggedIn ? "Logout" : "Login"}
 					</Button>
@@ -285,6 +298,7 @@ export default function Home(props) {
         <div className={classes.toolbar} />
         <div>{render}</div>
       </main>
+      </ThemeProvider>
     </div>
   );
 }

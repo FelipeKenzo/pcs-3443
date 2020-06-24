@@ -40,7 +40,9 @@ const styles = makeStyles((theme) =>({
 	},
 	toolbar: theme.mixins.toolbar,
 	root: {
-		minWidth: 470
+        minWidth: 470,
+        maxWidth:  '80%',
+        marginLeft: '5%'
 	},
 	bullet: {
 		display: 'inline-block',
@@ -99,8 +101,7 @@ function PatientList (props) {
                 setPatients(response.data.sort((a, b) => a.firstname.localeCompare(b.firstname)).map(function(patient) {
                     patient.name = patient.firstname + " " + patient.lastname;
                     return patient;
-                }));
-                localStorage.setItem('Patients', JSON.stringify(response.data));
+                }));// Kenzoooooo
                 setLoading(false);
             })
             .catch((err) => {
@@ -203,14 +204,15 @@ function PatientList (props) {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
+            
+                <Grid item xs={12} id="blocoLista" >
                     <Grid container spacing={1} maxWidth = "xs">
                         {filteredPatients.map((patient) => (
-                            <Grid item sm={12} >
+                            <Grid item sm={12} style={{ width: '100%' }} display="flex" justifyContent="center" >
                                 <Card className={classes.root} variant="outlined">
                                     <CardActionArea onClick={() => {props.handleSelectPatient(patient.email)}}>
                                         <CardContent>
-                                            <Typography variant="h6" component="h5" noWrap>
+                                            <Typography variant="h6" component="h5" noWrap> 
                                                 {patient.firstname + " " + patient.lastname}
                                             </Typography>
                                         </CardContent>
@@ -220,6 +222,7 @@ function PatientList (props) {
                         ))}
                     </Grid>
                 </Grid>
+          
             </Grid>
         );
         

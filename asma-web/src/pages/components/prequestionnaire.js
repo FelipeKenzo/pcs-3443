@@ -5,11 +5,9 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -27,7 +25,8 @@ const styles = makeStyles((theme) => ({
 		marginTop: theme.spacing(1),
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'center'
+        alignItems: 'center',
+        width: '100%'
 	},
 	avatar: {
 		margin: theme.spacing(1),
@@ -38,7 +37,14 @@ const styles = makeStyles((theme) => ({
 	},
 	progess: {
 		position: 'absolute'
-	}
+    },
+    fullWidth: {
+        width: '100%'    
+    },
+    typographyStyle: {
+        position: 'relative',
+        top: '30%'
+    },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -47,55 +53,110 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function PreQuestionnaire (props) {
     const classes = styles();
-    const [answers, setAnswers] = React.useState([0,0,0,0,0,0,0]);
-    const [answer1, setAnswer1] = React.useState("");
-    const [answer2, setAnswer2] = React.useState("");
-    const [answer3, setAnswer3] = React.useState("");
-    const [answer4, setAnswer4] = React.useState("");
-    const [answer5, setAnswer5] = React.useState("");
-    const [answer6, setAnswer6] = React.useState("");
-    const [answer7, setAnswer7] = React.useState("");
+    const [acq1, setAcq1] = React.useState("");
+    const [acq2, setAcq2] = React.useState("");
+    const [acq3, setAcq3] = React.useState("");
+    const [acq4, setAcq4] = React.useState("");
+    const [acq5, setAcq5] = React.useState("");
+    const [acq6, setAcq6] = React.useState("");
+    const [acq7, setAcq7] = React.useState("");
+    const [bar1, setBar1] = React.useState("");
+    const [bar2, setBar2] = React.useState("");
+    const [bar3, setBar3] = React.useState("");
+    const [bar4, setBar4] = React.useState("");
+    const [bar5, setBar5] = React.useState("");
+    const [bar6, setBar6] = React.useState("");
+    const [bar7, setBar7] = React.useState("");
+    const [bar8, setBar8] = React.useState("");
+    const [bar9, setBar9] = React.useState("");
+    const [bar10, setBar10] = React.useState("");
+
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
 
     const newPatient = JSON.parse(localStorage.getItem("registerPatient"));
 
     const handleChange1 = (e) => {
-        setAnswer1(e.target.value);
+        setAcq1(e.target.value);
     }
     
     const handleChange2 = (e) => {
-        setAnswer2(e.target.value);
+        setAcq2(e.target.value);
     }
 
     const handleChange3 = (e) => {
-        setAnswer3(e.target.value);
+        setAcq3(e.target.value);
     }
 
     const handleChange4 = (e) => {
-        setAnswer4(e.target.value);
+        setAcq4(e.target.value);
     }
 
     const handleChange5 = (e) => {
-        setAnswer5(e.target.value);
+        setAcq5(e.target.value);
     }
 
     const handleChange6 = (e) => {
-        setAnswer6(e.target.value);
+        setAcq6(e.target.value);
     }
 
     const handleChange7 = (e) => {
-        setAnswer7(e.target.value);
+        setAcq7(e.target.value);
     }
 
     const handleClose = () => {
         setOpen(false);
         props.handleBackToRegister();
-	}
+    }
+    
+    // Questionário de Barreiras
+
+    const handleBarChange1 = (e) => {
+        setBar1(e.target.value);
+    };
+
+    const handleBarChange2 = (e) => {
+        setBar2(e.target.value);
+    };
+    
+    const handleBarChange3 = (e) => {
+        setBar3(e.target.value);
+    };
+
+    const handleBarChange4 = (e) => {
+        setBar4(e.target.value);
+    };
+
+    const handleBarChange5 = (e) => {
+        setBar5(e.target.value);
+    };
+
+    const handleBarChange6 = (e) => {
+        setBar6(e.target.value);
+    };
+
+    const handleBarChange7 = (e) => {
+        setBar7(e.target.value);
+    };
+
+    const handleBarChange8 = (e) => {
+        setBar8(e.target.value);
+    };
+
+    const handleBarChange9 = (e) => {
+        setBar9(e.target.value);
+    };
+
+    const handleBarChange10 = (e) => {
+        setBar10(e.target.value);
+    };
+
 
     const handleSubmit = (event) => {
 		event.preventDefault();
-		setLoading(true);
+        setLoading(true);
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 		const newPatientData = {
             firstname: newPatient.firstname,
             lastname: newPatient.lastname,
@@ -105,7 +166,34 @@ function PreQuestionnaire (props) {
             weight: newPatient.weight,
             password: newPatient.password,
 			confirmPassword: newPatient.confirmPassword,
-			proid: localStorage.getItem('proId')
+            proid: localStorage.getItem('proId'),
+            acq:
+            [
+                {
+                    date: date,
+                    answers: [
+                        acq1,
+                        acq3,
+                        acq2,
+                        acq4,
+                        acq5,
+                        acq6,
+                        acq7
+                    ]
+                },
+            ],
+            bar: [
+                bar1,
+                bar2,
+                bar3,
+                bar4,
+                bar5,
+                bar6,
+                bar7,
+                bar8,
+                bar9,
+                bar10
+            ]
 		};
 		axios
 			.post('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/signup/patient', newPatientData)
@@ -125,11 +213,17 @@ function PreQuestionnaire (props) {
 	};
     
     return (
+        <div>
         <Grid container spacing={4}>
             <Grid item xs={12}>
                 <Button onClick={props.handleBackToRegister} variant="contained" color="secondary">
                     Voltar
                 </Button>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography component="h1" variant="h5">
+                    Questionário de Controle de Asma
+                </Typography>
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={4}>
@@ -140,7 +234,7 @@ function PreQuestionnaire (props) {
                                 <Typography variant="h6" component="h6">
                                     1) Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?
                                 </Typography>
-                                <RadioGroup name="q1" value={answer1} onChange={handleChange1}>
+                                <RadioGroup name="q1" value={acq1} onChange={handleChange1}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}></Grid>
                                         <Grid item xs={4}>
@@ -176,7 +270,7 @@ function PreQuestionnaire (props) {
                                 <Typography variant="h6" component="h6">
                                     2) Em média, durante os últimos sete dias, o quão ruins foram os seus sintomas da asma, quando você acordou pela manhã?
                                 </Typography>
-                                <RadioGroup name="q2" value={answer2} onChange={handleChange2}>
+                                <RadioGroup name="q2" value={acq2} onChange={handleChange2}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}></Grid>
                                         <Grid item xs={4}>
@@ -212,7 +306,7 @@ function PreQuestionnaire (props) {
                                 <Typography variant="h6" component="h6">
                                     3) De um modo geral, durante os últimos sete dias, o quão limitado você tem estado em suas atividades por causa de sua asma?
                                 </Typography>
-                                <RadioGroup name="q3" value={answer3} onChange={handleChange3}>
+                                <RadioGroup name="q3" value={acq3} onChange={handleChange3}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}></Grid>
                                         <Grid item xs={4}>
@@ -248,7 +342,7 @@ function PreQuestionnaire (props) {
                                 <Typography variant="h6" component="h6">
                                     4) De um modo geral, durante os últimos sete dias, o quanto de falta de ar você teve por causa de sua asma?
                                 </Typography>
-                                <RadioGroup name="q4" value={answer4} onChange={handleChange4}>
+                                <RadioGroup name="q4" value={acq4} onChange={handleChange4}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}></Grid>
                                         <Grid item xs={4}>
@@ -284,7 +378,7 @@ function PreQuestionnaire (props) {
                                 <Typography variant="h6" component="h6">
                                     5) De um modo geral, durante os últimos sete dias, quanto tempo você teve chiado? 
                                 </Typography>
-                                <RadioGroup name="q5" value={answer5} onChange={handleChange5}>
+                                <RadioGroup name="q5" value={acq5} onChange={handleChange5}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}></Grid>
                                         <Grid item xs={4}>
@@ -320,7 +414,7 @@ function PreQuestionnaire (props) {
                                 <Typography variant="h6" component="h6">
                                     6) Em média, durante os últimos sete dias, quantos jatos de broncodilatador de resgate (Sabutamol, Fenoterol, etc) você usou por dia?
                                 </Typography>
-                                <RadioGroup name="q6" value={answer6} onChange={handleChange6}>
+                                <RadioGroup name="q6" value={acq6} onChange={handleChange6}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}></Grid>
                                         <Grid item xs={4}>
@@ -356,7 +450,7 @@ function PreQuestionnaire (props) {
                                 <Typography variant="h6" component="h6">
                                     7) VEF1 pré broncodilatador ______ VEF1 previsto ______ VEF1 % previsto
                                 </Typography>
-                                <RadioGroup name="q7" value={answer7} onChange={handleChange7}>
+                                <RadioGroup name="q7" value={acq7} onChange={handleChange7}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}></Grid>
                                         <Grid item xs={4}>
@@ -384,6 +478,351 @@ function PreQuestionnaire (props) {
                 </Grid>
             </Grid>
             <Grid item xs={12}>
+                <Typography component="h1" variant="h5">
+                    Motivos que dificultam realizar a atividade física
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Não tenho interesse
+                                </Typography>
+                                <RadioGroup name="b1" value={bar1} onChange={handleBarChange1}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Falta de tempo
+                                </Typography>
+                                <RadioGroup name="b2" value={bar2} onChange={handleBarChange2}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Sinto que não tenho energia ou disposição
+                                </Typography>
+                                <RadioGroup name="b3" value={bar3} onChange={handleBarChange3}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Tenho medo de sentir falta de ar
+                                </Typography>
+                                <RadioGroup name="b4" value={bar4} onChange={handleBarChange4}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Não tenho companhia ou incentivo de amigos/família
+                                </Typography>
+                                <RadioGroup name="b5" value={bar5} onChange={handleBarChange5}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Não tenho dinheiro
+                                </Typography>
+                                <RadioGroup name="b6" value={bar6} onChange={handleBarChange6}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Tenho muitas coisas para fazer
+                                </Typography>
+                                <RadioGroup name="b7" value={bar7} onChange={handleBarChange7}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Não tenho um local sguro disponível
+                                </Typography>
+                                <RadioGroup name="b8" value={bar8} onChange={handleBarChange8}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Por causa do clima (por exemplo; frio, calor, chuva)
+                                </Typography>
+                                <RadioGroup name="b9" value={bar9} onChange={handleBarChange9}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={4}>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                        <FormControl component="fieldset">
+                            <Paper elevation={3}>
+                                <Typography variant="h6" component="h6">
+                                    Não tenho equipamentos para praticar
+                                </Typography>
+                                <RadioGroup name="b10" value={bar10} onChange={handleBarChange10}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}></Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="0" control={<Radio />} label="Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="1" control={<Radio />} label="Quase Sempre"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="2" control={<Radio />} label="Às Vezes"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Grid container spacing={0}>
+                                                <Grid item xs={12}><FormControlLabel value="3" control={<Radio />} label="Raramente"/></Grid>
+                                                <Grid item xs={12}><FormControlLabel value="4" control={<Radio />} label="Nunca"/></Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item xs={2}></Grid>
+                                    </Grid>
+                                </RadioGroup>
+                            </Paper>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
                 <Button
                     type="submit"
                     fullWidth
@@ -392,7 +831,24 @@ function PreQuestionnaire (props) {
                     label="Continuar para Questionário"
                     className={classes.submit}
                     onClick={handleSubmit}
-                    disabled={loading}
+                    disabled={loading ||
+                        !acq1 ||
+                        !acq2 ||
+                        !acq3 ||
+                        !acq4 ||
+                        !acq5 ||
+                        !acq6 ||
+                        !acq7 ||
+                        !bar1 ||
+                        !bar2 ||
+                        !bar3 ||
+                        !bar4 ||
+                        !bar5 ||
+                        !bar6 ||
+                        !bar7 ||
+                        !bar8 ||
+                        !bar9 ||
+                        !bar10}
                 >
                     Registrar Novo Paciente
                     {loading && <CircularProgress size={30} className={classes.progess} />}
@@ -418,6 +874,7 @@ function PreQuestionnaire (props) {
                 </Dialog>
             </Grid>
         </Grid>
+        </div>
     );
 }
 
