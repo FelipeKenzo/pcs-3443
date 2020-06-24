@@ -23,9 +23,11 @@ Future sendForms(dynamic st) async {
     .limit(1)
     .getDocuments();
 
+    print(DateTime.now());
+
     file.documents.forEach((data) {
       docid = data.documentID;
-      print(docid);
+      print("document id: ${docid}");
     });
 
     final len = file.documents.length;
@@ -39,7 +41,20 @@ Future sendForms(dynamic st) async {
     .document(user.email)
     .collection('Diario')
     .document(docid)
-    .updateData(st);
+    .setData(st, merge: true);
+    return Future.value(true);
+    // });
+  }
+}
+
+Future sendQuiz(dynamic st) async {
+  final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  if (user != null) {
+    var docid;
+    final file = await Firestore.instance
+    .collection('Paciente')
+    .document(user.email)
+    .setData(st, merge: true);
     return Future.value(true);
     // });
   }
