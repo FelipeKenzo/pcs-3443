@@ -99,7 +99,10 @@ exports.signUpPatient = (request, response) => {
         height: request.body.height,
         weight: request.body.weight,
 		password: request.body.password,
-		confirmPassword: request.body.confirmPassword,
+        confirmPassword: request.body.confirmPassword,
+        acq: request.body.acq,
+        bar: request.body.bar,
+        fitBitNum: request.body.fitBitNum
     };
 
     const { valid, errors } = validatePatientSignUpData(newUser);
@@ -135,12 +138,20 @@ exports.signUpPatient = (request, response) => {
             phoneNumber: newUser.phoneNumber,
             height: newUser.height,
             weight: newUser.weight,
+            bar: newUser.bar,
+            fitBitNum: newUser.fitBitNum,
             userId
         };
         return database
                .collection("Paciente")
                .doc(`${newUser.email}`)
                .set(userCredentials);
+    })
+    .then(() => {
+        return database.collection("Paciente")
+        .doc(`${newUser.email}`)
+        .collection('Diario')
+        .add({date: newUser.acq[0].date, acq: newUser.acq[0].answers});
     })
     .then(()=>{
         return response.status(201).json({ token });
