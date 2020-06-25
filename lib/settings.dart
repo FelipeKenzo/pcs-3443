@@ -22,11 +22,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
 
-    Navigator.pushReplacement(
+    Navigator.push(
       context, 
       MaterialPageRoute(
-        builder: (context) => LoginPage() 
+        builder: (context) => LoginPage()
       )
+    );
+  }
+
+  void ChangePassword(){
+    showDialog(context: context,
+    builder : (BuildContext context){
+      return AlertDialog(
+        title: new Text("Troca de senha"),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text ("Enviar"),
+            onPressed:(){Navigator.of(context).pop();}
+          ),
+          new FlatButton(
+            child: new Text ("Fechar"),
+            onPressed:(){Navigator.of(context).pop();}
+          ),
+        ],
+      );
+    }
     );
   }
 
@@ -48,72 +68,68 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(title: Text('Configurações')),
       body: SettingsList(
         sections: [
+          // SettingsSection(
+          //   title: 'Common',
+          //   tiles: [
+          //     SettingsTile(
+          //       title: 'Language',
+          //       subtitle: 'English',
+          //       leading: Icon(Icons.language),
+          //       onTap: () {
+          //         Navigator.of(context).push(MaterialPageRoute(
+          //             builder: (BuildContext context) => LanguagesScreen()));
+          //       },
+          //     ),
+          //     SettingsTile(
+          //         title: 'Environment',
+          //         subtitle: 'Production',
+          //         leading: Icon(Icons.cloud_queue)
+          //     ),
+          //   ],
+          // ),
           SettingsSection(
-            title: 'Common',
+            title: 'Conta',
             tiles: [
-              SettingsTile(
-                title: 'Language',
-                subtitle: 'English',
-                leading: Icon(Icons.language),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => LanguagesScreen()));
-                },
-              ),
-              SettingsTile(
-                  title: 'Environment',
-                  subtitle: 'Production',
-                  leading: Icon(Icons.cloud_queue)),
+              //SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
+              //SettingsTile(title: 'Email', leading: Icon(Icons.email)),
+              SettingsTile(title: 'Sair', leading: Icon(Icons.exit_to_app), onTap: () => logout(),),
+              SettingsTile(title: 'Autorizar Fitbit', leading: Icon(Icons.tablet_android), onTap: () => Identificador()),
             ],
           ),
-          SettingsSection(
-            title: 'Account',
-            tiles: [
-              SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
-              SettingsTile(title: 'Email', leading: Icon(Icons.email)),
-              SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app), onTap: () => logout(),),
-              SettingsTile(title: 'Data', leading: Icon(Icons.tablet_android), onTap: () => Identificador()),
-            ],
-          ),
-          SettingsSection(
-            title: 'Secutiry',
-            tiles: [
-              SettingsTile.switchTile(
-                title: 'Lock app in background',
-                leading: Icon(Icons.phonelink_lock),
-                switchValue: lockInBackground,
-                onToggle: (bool value) {
-                  setState(() {
-                    lockInBackground = value;
-                  });
-                },
-              ),
-              SettingsTile.switchTile(
-                  title: 'Use fingerprint',
-                  leading: Icon(Icons.fingerprint),
-                  onToggle: (bool value) {},
-                  switchValue: false),
-              SettingsTile.switchTile(
-                title: 'Change password',
-                leading: Icon(Icons.lock),
-                switchValue: true,
-                onToggle: (bool value) {},
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: 'Misc',
-            tiles: [
-              SettingsTile(
-                  title: 'Terms of Service', leading: Icon(Icons.description)),
-              SettingsTile(
-                  title: 'Open source licenses',
-                  leading: Icon(Icons.collections_bookmark)),
-            ],
-          )
+          // SettingsSection(
+          //   title: 'Segurança',
+          //   tiles: [
+          //     SettingsTile.switchTile(
+          //       title: 'Lock app in background',
+          //       leading: Icon(Icons.phonelink_lock),
+          //       switchValue: lockInBackground,
+          //       onToggle: (bool value) {
+          //         setState(() {
+          //           lockInBackground = value;
+          //         });
+          //       },
+          //     ),
+          //     SettingsTile.switchTile(
+          //         title: 'Use fingerprint',
+          //         leading: Icon(Icons.fingerprint),
+          //         onToggle: (bool value) {},
+          //         switchValue: false),
+          //     SettingsTile(title: 'Change password', leading: Icon(Icons.lock),),
+          //   ],
+          // ),
+          // SettingsSection(
+          //   title: 'Misc',
+          //   tiles: [
+          //     SettingsTile(
+          //         title: 'Terms of Service', leading: Icon(Icons.description)),
+          //     SettingsTile(
+          //         title: 'Open source licenses',
+          //         leading: Icon(Icons.collections_bookmark)),
+          //   ],
+          // )
         ],
       ),
     );

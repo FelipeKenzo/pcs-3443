@@ -102,7 +102,7 @@ class _Treino extends State<Treino> {
               'assets/natacao.png',
             ),
           new ListTile(
-          title: new Text('A natação é outro exercício aeróbico recomendado, entretanto, o fato de precisar de uma piscina dificulta a realização desse exercício. Caso você tenha acesso a alguma piscina, por que não nada de vez em quando?'),
+            title: new Text('A natação é outro exercício aeróbico recomendado, entretanto, o fato de precisar de uma piscina dificulta a realização desse exercício. Caso você tenha acesso a alguma piscina, por que não nada de vez em quando?'),
           ),
         ]
       )

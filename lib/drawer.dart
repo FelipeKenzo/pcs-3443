@@ -27,7 +27,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            title: Text('Configurações'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new SettingsScreen()));

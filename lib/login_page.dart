@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'settings.dart';
 import 'data_provider.dart';
 import 'splash_screen.dart';
+import 'FAQ.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
       ),
-      validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+      validator: (value) => value.isEmpty ? 'Email não pode ser vazio' : null,
     );
 
     final passwordInput = TextFormField(
@@ -52,22 +53,22 @@ class _LoginPageState extends State<LoginPage> {
       obscureText: true,
       controller: password,
       decoration: InputDecoration(
-        hintText: 'Password',
+        hintText: 'Senha',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
       ),
-      validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+      validator: (value) => value.isEmpty ? 'Password não pode ser vazio' : null,
     );
 
     Future _buildErrorDialog(BuildContext context, _message) {
       return showDialog(
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error Message'),
+            title: Text('Mensagem de erro'),
             content: Text(_message),
             actions: <Widget>[
               FlatButton(
-                  child: Text('Cancel'),
+                  child: Text('Cancelar'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   })
@@ -119,10 +120,10 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(color: Colors.black54),
       ),
       onPressed: () {
-        Navigator.pushReplacement(
+        Navigator.push(
           context, 
           MaterialPageRoute(
-            builder: (context) => SettingsScreen()
+            builder: (context) => FAQ()
           )
         );
       },

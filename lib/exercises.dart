@@ -88,8 +88,17 @@ class _ExercisesState extends State<Exercises> {
 
   Future<Data> fetchGoal() async {
     Data dt = Data.fromJson(await sharedPref.read("Data"));
-    var meta = dt.goal_array[2].goal;
-    if (dt.goal_array[2].goal == '0') {
+    var meta;
+    if (dt.goal_array.length == 0) {
+      meta = '1000';
+    } else if (dt.goal_array.length == 1) {
+      meta = dt.goal_array[0].goal;
+    } else if (dt.goal_array.length == 2) {
+      meta = dt.goal_array[0].goal;
+    } else {
+      meta = dt.goal_array[0].goal;
+    }
+    if (dt.goal_array[0].goal == '0') {
       meta = '1000';
     }
     // print("goal array[2]: ${dt.goal_array[2].goal}");
@@ -107,7 +116,7 @@ class _ExercisesState extends State<Exercises> {
           // } else {
           if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
             final ExampleViewModel viewModel = viewModel03;
-            var max_value = int.parse(snapshot.data.goal_array[2].goal).toDouble();
+            var max_value = int.parse(snapshot.data.goal_array[0].goal).toDouble() ?? 0;
             if (max_value == 0) {
               max_value = 1000.0;
             }
@@ -129,7 +138,7 @@ class _ExercisesState extends State<Exercises> {
                     appearance: viewModel.appearance,
                     min: viewModel.min,
                     max: max_value,
-                    initialValue: int.parse(snapshot.data.history_array[2].steps).toDouble(),
+                    initialValue: int.parse(snapshot.data.history_array[0].steps).toDouble(),
                   )
                 ),
               ),

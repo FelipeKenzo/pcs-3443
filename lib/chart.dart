@@ -47,12 +47,27 @@ class _FChartState extends State<FChartsApp> {
 
     Future fetchRecords() async {
       Data data = Data.fromJson(await sharedPref.read("Data"));
-      dt = [
-        Record(data.history_array[2].date, int.parse(data.history_array[2].steps), int.parse(data.goal_array[2].goal)),
-        Record(data.history_array[1].date, int.parse(data.history_array[1].steps), int.parse(data.goal_array[1].goal)),
-        Record(data.history_array[0].date, int.parse(data.history_array[0].steps), int.parse(data.goal_array[0].goal)),
-        // Record(days[3], 10, 5),
-      ];
+      if (data.history_array.length == 1) {
+        dt = [
+          Record(data.history_array[0].date, int.parse(data.history_array[0].steps), int.parse(data.goal_array[0].goal)),
+          Record('0', 0, 0),
+          Record('0', 0, 0),
+        ];
+      } else if(data.history_array.length == 2) {
+        dt = [
+          Record(data.history_array[0].date, int.parse(data.history_array[0].steps), int.parse(data.goal_array[0].goal)),
+          Record(data.history_array[1].date, int.parse(data.history_array[1].steps), int.parse(data.goal_array[1].goal)),
+          Record("0", 0, 0),
+          // Record(days[3], 10, 5),
+        ];
+      } else {
+        dt = [
+          Record(data.history_array[2].date, int.parse(data.history_array[2].steps), int.parse(data.goal_array[2].goal)),
+          Record(data.history_array[1].date, int.parse(data.history_array[1].steps), int.parse(data.goal_array[1].goal)),
+          Record(data.history_array[0].date, int.parse(data.history_array[0].steps), int.parse(data.goal_array[0].goal)),
+          // Record(days[3], 10, 5),
+        ];
+      }
       // print('${data.history_array[2].steps} ${data.history_array[1].steps} ${data.history_array[0].steps}');
       return dt;
     }
