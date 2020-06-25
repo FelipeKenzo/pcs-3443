@@ -156,7 +156,15 @@ function PreQuestionnaire (props) {
 		event.preventDefault();
         setLoading(true);
         var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var month = today.getMonth()+1;
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var day = today.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        var date = today.getFullYear() + '-' + month + '-' + day;
 		const newPatientData = {
             firstname: newPatient.firstname,
             lastname: newPatient.lastname,
@@ -164,6 +172,7 @@ function PreQuestionnaire (props) {
             phoneNumber: newPatient.phoneNumber,
             height: newPatient.height,
             weight: newPatient.weight,
+            fitBitNum: newPatient.fitBitId,
             password: newPatient.password,
 			confirmPassword: newPatient.confirmPassword,
             proid: localStorage.getItem('proId'),
@@ -172,27 +181,27 @@ function PreQuestionnaire (props) {
                 {
                     date: date,
                     answers: [
-                        acq1,
-                        acq3,
-                        acq2,
-                        acq4,
-                        acq5,
-                        acq6,
-                        acq7
+                        parseInt(acq1),
+                        parseInt(acq3),
+                        parseInt(acq2),
+                        parseInt(acq4),
+                        parseInt(acq5),
+                        parseInt(acq6),
+                        parseInt(acq7)
                     ]
                 },
             ],
             bar: [
-                bar1,
-                bar2,
-                bar3,
-                bar4,
-                bar5,
-                bar6,
-                bar7,
-                bar8,
-                bar9,
-                bar10
+                parseInt(bar1),
+                parseInt(bar2),
+                parseInt(bar3),
+                parseInt(bar4),
+                parseInt(bar5),
+                parseInt(bar6),
+                parseInt(bar7),
+                parseInt(bar8),
+                parseInt(bar9),
+                parseInt(bar1)
             ]
 		};
 		axios

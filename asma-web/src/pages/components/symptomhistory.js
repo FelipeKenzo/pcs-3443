@@ -15,6 +15,14 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import ClearIcon from '@material-ui/icons/Clear';
+import Tooltip from '@material-ui/core/Tooltip';
+
+const icon_tosse = require("../../images/tosse.png")
+const icon_chiado = require("../../images/chiado.png")
+const icon_faltadear = require("../../images/faltadear.png")
+const icon_acordar = require("../../images/acordar.png")
+const icon_bombinha = require("../../images/bombinha.png")
+const icon_size = '60px'
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -33,6 +41,15 @@ const StyledTableRow = withStyles((theme) => ({
         },
     },
 }))(TableRow);
+
+const LightTooltip = withStyles((theme) => ({
+    tooltip: {
+      backgroundColor: theme.palette.common.white,
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: theme.shadows[1],
+      fontSize: 14,
+    },
+  }))(Tooltip);
 
 function createData(date, symptoms){
     return { date, symptoms };
@@ -107,22 +124,19 @@ export default function SymptomHistory(props) {
     var rows = [];
     if (props.data !== undefined) {
         const data = props.data;  
-        var rows = [];
         for (var i = 0; i < data.length; i++) {
             let symptoms = data[i].sintomas;
             let checklist = [false, false, false, false, false];
             for (var j = 0; j < symptoms.length; j++) {
-                checklist[0] = (symptoms[j] == "Tosse");
-                checklist[1] = (symptoms[j] == "Chiado");
-                checklist[2] = (symptoms[j] == "Falta de ar");
-                checklist[3] = (symptoms[j] == "Acordar");
-                checklist[4] = (symptoms[j] == "Bombinha");
+                checklist[0] = (symptoms[j] === "Tosse");
+                checklist[1] = (symptoms[j] === "Chiado");
+                checklist[2] = (symptoms[j] === "Falta de ar");
+                checklist[3] = (symptoms[j] === "Acordar");
+                checklist[4] = (symptoms[j] === "Bombinha");
             }
             rows.push(createData(data[i].date, checklist));
         }
     }
-
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
@@ -139,11 +153,41 @@ export default function SymptomHistory(props) {
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>Data</StyledTableCell>
-                        <StyledTableCell align="center">Tosse</StyledTableCell>
-                        <StyledTableCell align="center">Chiado</StyledTableCell>
-                        <StyledTableCell align="center">Falta de ar</StyledTableCell>
-                        <StyledTableCell align="center">Acordar</StyledTableCell>
-                        <StyledTableCell align="center">Bombinha</StyledTableCell>
+                        <StyledTableCell align="center">
+                            <React.Fragment>
+                                <img width={icon_size} height={icon_size} src={icon_tosse} />
+                                <br />
+                            </React.Fragment>
+                            Tosse
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                            <React.Fragment>
+                                <img width={icon_size} height={icon_size} src={icon_chiado} />
+                                <br />
+                            </React.Fragment>
+                            Chiado
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                            <React.Fragment>
+                                <img width={icon_size} height={icon_size} src={icon_faltadear} />
+                                <br />
+                            </React.Fragment>
+                            Falta de ar
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                            <React.Fragment>
+                                <img width={icon_size} height={icon_size} src={icon_acordar} />
+                                <br />
+                            </React.Fragment>
+                            Acordar
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                            <React.Fragment>
+                                <img width={icon_size} height={icon_size} src={icon_bombinha} />
+                                <br />
+                            </React.Fragment>
+                            Bombinha
+                        </StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

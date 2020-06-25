@@ -8,13 +8,13 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import ClearIcon from '@material-ui/icons/Clear';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -25,6 +25,15 @@ const StyledTableCell = withStyles((theme) => ({
         fontSize: 14,
     },
 }))(TableCell);
+
+const LightTooltip = withStyles((theme) => ({
+    tooltip: {
+      backgroundColor: theme.palette.common.white,
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: theme.shadows[1],
+      fontSize: 14,
+    },
+  }))(Tooltip);
 
 const StyledTableRow = withStyles((theme) => ({
     root: {
@@ -104,6 +113,16 @@ const answerLabels = [
     ]
 ]
 
+const questions = [
+    "Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?",
+    "Em média, durante os últimos sete dias, o quão ruins foram os seus sintomas da asma, quando você acordou pela manhã?",
+    "De um modo geral, durante os últimos sete dias, o quão limitado você tem estado em suas atividades por causa de sua asma?",
+    "De um modo geral, durante os últimos sete dias, o quanto de falta de ar você teve por causa de sua asma?",
+    "De um modo geral, durante os últimos sete dias, quanto tempo você teve chiado?",
+    "Em média, durante os últimos sete dias, quantos jatos de broncodilatador de resgate (Sabutamol, Fenoterol, etc) você usou por dia?",
+    "VEF1 pré broncodilatador ______ VEF1 previsto ______ VEF1 % previsto"
+]
+
 const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 700,
@@ -173,7 +192,6 @@ export default function SymptomHistory(props) {
     var rows = [];
     if (props.data !== undefined) {
         const data = props.data;  
-        var rows = [];
         for (var i = 0; i < data.length; i++) {
             let answers = data[i].answers;
             console.log(answers)
@@ -185,8 +203,6 @@ export default function SymptomHistory(props) {
             rows.push(createData(data[i].date, labels));
         }
     }
-
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     const handleChangePage = (e, newPage) => {
         setPage(newPage);
@@ -202,14 +218,28 @@ export default function SymptomHistory(props) {
             <Table stickyHeader className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Data</StyledTableCell>
-                        <StyledTableCell align="center">Questão 1</StyledTableCell>
-                        <StyledTableCell align="center">Questão 2</StyledTableCell>
-                        <StyledTableCell align="center">Questão 3</StyledTableCell>
-                        <StyledTableCell align="center">Questão 4</StyledTableCell>
-                        <StyledTableCell align="center">Questão 5</StyledTableCell>
-                        <StyledTableCell align="center">Questão 6</StyledTableCell>
-                        <StyledTableCell align="center">Questão 7</StyledTableCell>
+                        <StyledTableCell >Data</StyledTableCell>
+                        <LightTooltip title={questions[0]} placement="top">
+                            <StyledTableCell align="center">Questão 1</StyledTableCell>
+                        </LightTooltip>
+                        <LightTooltip title={questions[1]} placement="top">
+                            <StyledTableCell align="center">Questão 2</StyledTableCell>
+                        </LightTooltip>
+                        <LightTooltip title={questions[2]} placement="top">
+                            <StyledTableCell align="center">Questão 3</StyledTableCell>
+                        </LightTooltip>
+                        <LightTooltip title={questions[3]} placement="top">
+                            <StyledTableCell align="center">Questão 4</StyledTableCell>
+                        </LightTooltip>
+                        <LightTooltip title={questions[4]} placement="top">
+                            <StyledTableCell align="center">Questão 5</StyledTableCell>
+                        </LightTooltip>
+                        <LightTooltip title={questions[5]} placement="top">
+                            <StyledTableCell align="center">Questão 6</StyledTableCell>
+                        </LightTooltip>
+                        <LightTooltip title={questions[6]} placement="top">
+                            <StyledTableCell align="center">Questão 7</StyledTableCell>
+                        </LightTooltip>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -219,21 +249,35 @@ export default function SymptomHistory(props) {
                     ).map((row) => (
                         <StyledTableRow key={row.date}>
                             <StyledTableCell component="th" scope="row">{row.date}</StyledTableCell>
-                            <StyledTableCell align="center">{row.labels[0]}</StyledTableCell>
-                            <StyledTableCell align="center">{row.labels[1]}</StyledTableCell>
-                            <StyledTableCell align="center">{row.labels[2]}</StyledTableCell>
-                            <StyledTableCell align="center">{row.labels[3]}</StyledTableCell>
-                            <StyledTableCell align="center">{row.labels[4]}</StyledTableCell>
-                            <StyledTableCell align="center">{row.labels[5]}</StyledTableCell>
-                            <StyledTableCell align="center">{row.labels[6]}</StyledTableCell>
+                            <LightTooltip title={questions[0]} placement="top">
+                                <StyledTableCell align="center">{row.labels[0]}</StyledTableCell>
+                            </LightTooltip>
+                            <LightTooltip title={questions[1]} placement="top">
+                                <StyledTableCell align="center">{row.labels[1]}</StyledTableCell>
+                            </LightTooltip>
+                            <LightTooltip title={questions[2]} placement="top">
+                                <StyledTableCell align="center">{row.labels[2]}</StyledTableCell>
+                            </LightTooltip>
+                            <LightTooltip title={questions[3]} placement="top">
+                                <StyledTableCell align="center">{row.labels[3]}</StyledTableCell>
+                            </LightTooltip>
+                            <LightTooltip title={questions[4]} placement="top">
+                                <StyledTableCell align="center">{row.labels[4]}</StyledTableCell>
+                            </LightTooltip>
+                            <LightTooltip title={questions[5]} placement="top">
+                                <StyledTableCell align="center">{row.labels[5]}</StyledTableCell>
+                            </LightTooltip>
+                            <LightTooltip title={questions[6]} placement="top">
+                                <StyledTableCell align="center">{row.labels[6]}</StyledTableCell>
+                            </LightTooltip>
                         </StyledTableRow>
                     ))}
                 </TableBody>
-                <TableFooter>
+                <TableFooter display="flex" justifyContent="flex-end">
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[1, 10, 20, 30, { label: 'Todas', value: -1 }]}
-                            colSpan={6}
+                            colSpan={8}
                             count={rows.length}
                             rowsPerPage={rowsPerPage}
                             page={page}

@@ -11,7 +11,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -19,10 +18,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import CreateIcon from '@material-ui/icons/Create';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid'
+import { ThemeProvider } from '@material-ui/core/styles';
 
 import axios from 'axios';
 
@@ -32,14 +31,18 @@ import RegisterPatient from './components/registerpatient';
 import PatientDetails from './components/patientdetails';
 import Statistics from './components/statistics';
 import PreQuestionnaire from './components/prequestionnaire';
+import ProAccount from './components/proaccount';
 
 
 const drawerWidth = 240;
 const logo = require("../images/logo_white.png")
+const logo2 = "https://i.pinimg.com/280x280_RS/49/4e/7e/494e7e0bd975eea2c006781d0c521e05.jpg"
+const logo3 = "https://i.imgur.com/EUzOByn.png"
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    backgroundColor:"#ffffff"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -96,6 +99,13 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    backgroundImage: `url(${logo3})`,
+    //height: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundColor:"#ffffff",
+    height:'95vh'
+    
   },
   typographyFlex: {
     flex: 1,
@@ -111,7 +121,6 @@ export default function Home(props) {
   const [patientEmail, setPatientEmail] = React.useState("");
   const [renderDetails, setRenderDetails] = React.useState(false);
   const [renderQuestionnaire, setRenderQuestionnaire] = React.useState(false);
-  const [darkMode, setDarkMode] = React.useState(false);
 
   // const theme = React.useMemo(
   //   () =>
@@ -157,6 +166,10 @@ export default function Home(props) {
   
   const renderPrequestionnaire = () => {
     setRender(4);
+  }
+  
+  const renderProAccount = () => {
+    setRender(5);
   }
   
   const handleSelectPatient = (patientEmail) =>   {
@@ -215,6 +228,12 @@ export default function Home(props) {
       case 4:
         render = <PreQuestionnaire handleBackToRegister={handleBackToRegister} />
         break;
+      case 5:
+        render = <ProAccount />;
+        break;
+      default:
+        render = <PatientList handleSelectPatient={handleSelectPatient} history={props.history} />;
+        break;
     }
 
   return (
@@ -247,7 +266,7 @@ export default function Home(props) {
               RespireHC
           </Typography>*/}
             <Box flex="1">
-              <img src={logo} width="79px" height="50px" />
+              <img src={logo} width="79px" height="50px" alt={"Logo"}/>
             </Box>
 
             <IconButton
@@ -258,7 +277,7 @@ export default function Home(props) {
             </IconButton>
 					<Button 
 						variant="contained" 
-						color="default"
+						color="secondary"
 						onClick={logOutHandler}>
 						{loggedIn ? "Logout" : "Login"}
 					</Button>
@@ -294,6 +313,10 @@ export default function Home(props) {
           <ListItem divider button key="regist" onClick={renderQuestionnaire? renderPrequestionnaire : renderReg}>
             <ListItemIcon><CreateIcon /></ListItemIcon>
             <ListItemText primary="Registrar Paciente" />
+          </ListItem>
+          <ListItem divider button key="account" onClick={renderProAccount}>
+            <ListItemIcon><AccountCircleIcon/></ListItemIcon>
+            <ListItemText primary="Minha Conta" />
           </ListItem>
         </List>
       </Drawer>

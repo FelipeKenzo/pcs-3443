@@ -5,13 +5,10 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-import { authMiddleWare } from './util/auth';
 
 import axios from 'axios';
 
@@ -123,7 +120,7 @@ class login extends Component {
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
-					<img src={logo} width="450px" height="285px"/>
+					<img src={logo} width="450px" height="285px" alt={"logo"}/>
 					<Typography component="h1" variant="h5">
 						Login
 					</Typography>

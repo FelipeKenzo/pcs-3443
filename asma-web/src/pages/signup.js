@@ -102,7 +102,7 @@ class signup extends Component {
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
-						Sign up
+						Cadastrar
 					</Typography>
 					<form className={classes.form} noValidate>
 						<Grid container spacing={2}>
@@ -193,13 +193,13 @@ class signup extends Component {
                                 !this.state.firstName || 
                                 !this.state.lastName}
 						>
-							Sign Up
+							Cadastrar
 							{loading && <CircularProgress size={30} className={classes.progess} />}
 						</Button>
 						<Grid container justify="flex-end">
 							<Grid item>
 								<Link href="login" variant="body2">
-									Already have an account? Sign in
+									Já possui uma conta? Entrar
 								</Link>
 							</Grid>
 						</Grid>

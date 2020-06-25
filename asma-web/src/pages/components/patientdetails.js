@@ -5,12 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
-import EditIcon from '@material-ui/icons/Edit';
-import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
   } from 'recharts';
 
 import axios from 'axios';
@@ -19,6 +17,7 @@ import SymptomHistory from './symptomhistory';
 import AcqHistory from './acqhistory';
 import PatientInfo from './patientinfo';
 import SpreadsheetGenerator from './spreadsheetgen';
+import Barriers from './barriers';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
     },
     fixedHeight: {
+        height: "75vh",
+    },
+    fixedHalfHeight: {
         height: "75vh",
     },
     bottomButton: {
@@ -57,7 +59,9 @@ export default function PatientDetails(props) {
     const [data, setData] = React.useState("");
     const [loading, setLoading] = React.useState(true);
     const [stepSeries, setStepSeries] = React.useState([]);
+    const [maxY, setMaxY] = React.useState(0);
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const fixedHalfHeightPaper = clsx(classes.paper, classes.fixedHalfHeight);
 
     React.useEffect(() => {
         const authToken = localStorage.getItem('AuthToken');
@@ -68,17 +72,24 @@ export default function PatientDetails(props) {
         axios
             .post('https://us-central1-pcs3443-6c313.cloudfunctions.net/api/profile/p', patient)
             .then((response) => {
+                console.log(response.data);
                 setData(response.data[0]);
                 const steps = response.data[0].history_array.map((item,i) => {
                     item["goal"] = response.data[0].goal_array[i].goal;
                     return item;
                 });
                 setStepSeries(steps.reverse());
-                console.log(steps);
+                var max = 0;
+                steps.forEach((item) => {
+                    if (max < parseInt(item.steps)) max = item.steps;
+                    if (max < parseInt(item.goal)) max = item.goal;
+                });
+                console.log(max);
+                setMaxY(max);
                 setLoading(false);
             })
             .catch((err) => {
-                if(err.response.status === 403) {
+                if(err.response !== undefined && err.response.status === 403) {
                     props.history.push('/login');
                   }
                 console.log(err);
@@ -148,7 +159,7 @@ export default function PatientDetails(props) {
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="date" />
-                                <YAxis domain={[0, "auto"]}/>
+                                <YAxis domain={[0, parseInt(maxY)]}/>
                                 <Tooltip />
                                 <Legend />
                                 <Area type="monotone" dataKey="steps" stroke="#000080" fillOpacity={1} fill="url(#colorSteps)" name="passos"/>
@@ -173,6 +184,7 @@ export default function PatientDetails(props) {
                         <Typography variant="h5">
                             Barreiras ao Exercício
                         </Typography>
+                        <Barriers data={data.bar} />
                     </Grid>
                 </Grid>
             </div> 

@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles } from '@material-ui/core/styles';
 import { authMiddleWare } from '../util/auth';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 import axios from 'axios';
 
@@ -42,7 +43,8 @@ const styles = makeStyles((theme) =>({
 	toolbar: theme.mixins.toolbar,
 	root: {
         maxWidth:  '80%',
-        marginLeft: 10
+        marginLeft: 10,
+		backgroundColor: fade("#ffffff",0.8)
 	},
 	bullet: {
 		display: 'inline-block',
@@ -101,7 +103,7 @@ function PatientList (props) {
                 setPatients(response.data.sort((a, b) => a.firstname.localeCompare(b.firstname)).map(function(patient) {
                     patient.name = patient.firstname + " " + patient.lastname;
                     return patient;
-                }));// Kenzoooooo
+                }));
                 setLoading(false);
             })
             .catch((err) => {
@@ -194,7 +196,7 @@ function PatientList (props) {
                             renderValue={() => { return filterType; }}
                         >
                             <MenuItem value="Nome">Nome</MenuItem>
-                            <MenuItem value="RGHC">RGHC</MenuItem>
+                            <MenuItem value="FitBit">FitBit</MenuItem>
                         </Select></Box>         
                         
                     </Box>

@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import grey from '@material-ui/core/colors/grey';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const styles = (theme) => ({
 	paper: {
@@ -26,6 +28,9 @@ const styles = (theme) => ({
 	},
 	progess: {
 		position: 'absolute'
+	},
+	textfields:{
+		backgroundColor: fade("#ffffff",0.8)
 	}
 });
 
@@ -46,6 +51,7 @@ class RegisterPatient extends Component {
 				phoneNumber: '',
 				height: '',
 				weight: '',
+				fitBitNum: '',
 				password: '',
 				confirmPassword: '',
 				errors: [],
@@ -78,12 +84,12 @@ class RegisterPatient extends Component {
 							<Grid item xs={12} sm={6}>
 								<TextField
 									variant="outlined"
+									className={classes.textfields}
 									required
 									fullWidth
 									id="firstname"
 									label="Nome"
 									name="firstname"
-									autoComplete="firstname"
 									helperText={errors.firstName}
 									error={errors.firstName ? true : false}
 									onChange={this.handleChange}
@@ -95,10 +101,11 @@ class RegisterPatient extends Component {
 									variant="outlined"
 									required
 									fullWidth
+									className={classes.textfields}
+									required
 									id="lastname"
 									label="Sobrenome"
 									name="lastname"
-									autoComplete="lastname"
 									helperText={errors.lastname}
 									error={errors.lastname ? true : false}
 									onChange={this.handleChange}
@@ -110,12 +117,13 @@ class RegisterPatient extends Component {
 								<TextField
 									variant="outlined"
 									required
+									className={classes.textfields}
+									required
 									fullWidth
 									id="height"
 									label="Altura"
 									type="number"
 									name="height"
-									autoComplete="altura"
 									helperText={errors.height}
 									error={errors.height ? true : false}
 									onChange={this.handleChange}
@@ -128,10 +136,11 @@ class RegisterPatient extends Component {
 									required
 									fullWidth
 									id="weight"
+									className={classes.textfields}
+									required
 									label="Peso"
 									type="number"
 									name="weight"
-									autoComplete="peso"
 									helperText={errors.weight}
 									error={errors.weight ? true : false}
 									onChange={this.handleChange}
@@ -143,15 +152,17 @@ class RegisterPatient extends Component {
 								<TextField
 									variant="outlined"
 									required
+									className={classes.textfields}
+									required
 									fullWidth
-									id="newemail"
+									id="newEmail"
 									label="Email"
 									name="email"
-									autoComplete="email"
+									autoComplete="off"
 									helperText={errors.email}
+									value={this.state.email}
 									error={errors.email ? true : false}
 									onChange={this.handleChange}
-									value={this.state.email}
 								/>
 							</Grid>
 
@@ -161,10 +172,11 @@ class RegisterPatient extends Component {
 									required
 									fullWidth
 									id="phoneNumber"
+									className={classes.textfields}
+									required
 									type="tel"
 									label="Telefone"
 									name="phoneNumber"
-									autoComplete="phoneNumber"
 									helperText={errors.telephone}
 									error={errors.telephone ? true : false}
 									onChange={this.handleChange}
@@ -177,14 +189,34 @@ class RegisterPatient extends Component {
 									variant="outlined"
 									required
 									fullWidth
+									id="fitBitId"
+									type="number"
+									className={classes.textfields}
+									required
+									label="Número do Fit Bit"
+									name="fitBitId"
+									helperText={errors.fitBitId}
+									error={errors.fitBitId ? true : false}
+									onChange={this.handleChange}
+									value={this.state.fitBitId}
+								/>
+							</Grid>
+
+							<Grid item xs={12}>
+								<TextField
+									required
+									variant="outlined"
+									required
+									className={classes.textfields}
+									required
+									fullWidth
 									name="password"
 									label="Senha"
 									type="password"
-									id="newpassword"
-									autoComplete="current-password"
+									id="newPassword"
+									autoComplete="new-password"
 									error={errors.confirmPassword ? true : false}
 									onChange={this.handleChange}
-									value={this.state.password}
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -192,13 +224,14 @@ class RegisterPatient extends Component {
 									variant="outlined"
 									required
 									fullWidth
+									className={classes.textfields}
+									required
 									name="confirmPassword"
 									label="Confirmar Senha"
 									type="password"
 									id="confirmPassword"
 									helperText={errors.confirmPassword}
 									error={errors.confirmPassword ? true : false}
-									autoComplete="current-password"
 									onChange={this.handleChange}
 									value={this.state.confirmPassword}
 								/>
