@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/pcs-3443/static/js/main.7b68c3d5.chunk.js",
-    "main.js.map": "/pcs-3443/static/js/main.7b68c3d5.chunk.js.map",
-    "runtime-main.js": "/pcs-3443/static/js/runtime-main.7f23848e.js",
-    "runtime-main.js.map": "/pcs-3443/static/js/runtime-main.7f23848e.js.map",
-    "static/js/2.0d564b5b.chunk.js": "/pcs-3443/static/js/2.0d564b5b.chunk.js",
-    "static/js/2.0d564b5b.chunk.js.map": "/pcs-3443/static/js/2.0d564b5b.chunk.js.map",
-    "index.html": "/pcs-3443/index.html",
-    "precache-manifest.ee371f0cff727fa0027c086de62f5806.js": "/pcs-3443/precache-manifest.ee371f0cff727fa0027c086de62f5806.js",
-    "service-worker.js": "/pcs-3443/service-worker.js",
-    "static/js/2.0d564b5b.chunk.js.LICENSE.txt": "/pcs-3443/static/js/2.0d564b5b.chunk.js.LICENSE.txt",
-    "static/media/logo.png": "/pcs-3443/static/media/logo.0992738e.png",
-    "static/media/logo_white.png": "/pcs-3443/static/media/logo_white.5a2b0659.png"
+    "main.js": "./static/js/main.e5b8d9e3.chunk.js",
+    "main.js.map": "./static/js/main.e5b8d9e3.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.d4e883c0.js",
+    "runtime-main.js.map": "./static/js/runtime-main.d4e883c0.js.map",
+    "static/js/2.0d564b5b.chunk.js": "./static/js/2.0d564b5b.chunk.js",
+    "static/js/2.0d564b5b.chunk.js.map": "./static/js/2.0d564b5b.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.b0f2289f3292a66a2257ef64a0752d17.js": "./precache-manifest.b0f2289f3292a66a2257ef64a0752d17.js",
+    "service-worker.js": "./service-worker.js",
+    "static/js/2.0d564b5b.chunk.js.LICENSE.txt": "./static/js/2.0d564b5b.chunk.js.LICENSE.txt",
+    "static/media/logo.png": "./static/media/logo.0992738e.png",
+    "static/media/logo_white.png": "./static/media/logo_white.5a2b0659.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.7f23848e.js",
+    "static/js/runtime-main.d4e883c0.js",
     "static/js/2.0d564b5b.chunk.js",
-    "static/js/main.7b68c3d5.chunk.js"
+    "static/js/main.e5b8d9e3.chunk.js"
   ]
 }
